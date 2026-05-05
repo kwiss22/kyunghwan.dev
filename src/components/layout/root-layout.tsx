@@ -13,7 +13,7 @@ export function RootLayout() {
           </Link>
           <nav className="text-sm text-muted-foreground">
             <a
-              href="mailto:kormedi.aiga@gmail.com"
+              href="mailto:kwiss22@hanyang.ac.kr"
               className="hover:text-foreground transition-colors"
             >
               contact

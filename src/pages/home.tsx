@@ -45,7 +45,7 @@ export function HomePage() {
             케이스 스터디 보기
           </a>
           <a
-            href="mailto:kormedi.aiga@gmail.com"
+            href="mailto:kwiss22@hanyang.ac.kr"
             className={buttonVariants({ variant: "ghost", size: "lg" })}
           >
             연락하기
