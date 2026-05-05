@@ -8,8 +8,15 @@ type CaseStudy = {
   slug: string;
   title: string;
   summary: string;
-  status: "live" | "draft";
+  /** live: 실제 프로젝트 본문. demo: 구조 예시용 가상 시나리오. draft: 작성 중. */
+  status: "live" | "demo" | "draft";
   tags: string[];
+};
+
+const STATUS_LABEL: Record<CaseStudy["status"], string> = {
+  live: "Live",
+  demo: "Demo",
+  draft: "Draft",
 };
 
 const caseStudies: CaseStudy[] = [
@@ -17,8 +24,8 @@ const caseStudies: CaseStudy[] = [
     slug: "seller-backoffice",
     title: "Seller Backoffice 리디자인",
     summary:
-      "셀러가 매일 쓰는 운영 도구를 처음부터 다시 설계한 이야기. 어떤 가설을 세웠고, 무엇을 측정했고, 무엇이 바뀌었는지.",
-    status: "draft",
+      "셀러가 매일 쓰는 운영 도구를 처음부터 다시 설계한 이야기. 어떤 가설을 세웠고, 무엇을 측정했고, 무엇이 바뀌었는지. — 구조 예시용 가상 시나리오.",
+    status: "demo",
     tags: ["Product", "B2B", "Information Architecture"],
   },
 ];
@@ -82,9 +89,9 @@ export function HomePage() {
                       <h3 className="text-xl font-medium tracking-tight">
                         {cs.title}
                       </h3>
-                      {cs.status === "draft" && (
+                      {cs.status !== "live" && (
                         <span className="rounded-full border border-border/70 px-2 py-0.5 text-[10px] uppercase tracking-wider text-muted-foreground">
-                          Draft
+                          {STATUS_LABEL[cs.status]}
                         </span>
                       )}
                     </div>
