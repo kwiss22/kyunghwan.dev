@@ -1,5 +1,7 @@
 import { Link, Outlet } from "react-router-dom";
 
+import { ThemeToggle } from "@/components/theme-toggle";
+
 export function RootLayout() {
   return (
     <div className="min-h-dvh flex flex-col">
@@ -11,13 +13,15 @@ export function RootLayout() {
           >
             kyunghwan.dev
           </Link>
-          <nav className="text-sm text-muted-foreground">
+          <nav className="flex items-center gap-3 text-sm text-muted-foreground">
             <a
               href="mailto:kwiss22@hanyang.ac.kr"
               className="hover:text-foreground transition-colors"
             >
               contact
             </a>
+            <span className="h-4 w-px bg-border/70" aria-hidden />
+            <ThemeToggle />
           </nav>
         </div>
       </header>

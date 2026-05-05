@@ -1,6 +1,13 @@
 import { Link } from "react-router-dom";
 
+import { useSeo } from "@/hooks/use-seo";
+
 export function NotFoundPage() {
+  useSeo({
+    title: "페이지를 찾을 수 없습니다",
+    description: "요청한 페이지가 없습니다. 허브로 돌아가서 둘러보세요.",
+  });
+
   return (
     <div className="mx-auto w-full max-w-3xl px-6 py-24 md:py-32 text-center">
       <p className="font-mono text-xs uppercase tracking-[0.2em] text-muted-foreground">

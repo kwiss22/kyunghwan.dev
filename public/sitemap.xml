@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  배포 도메인이 정해지면 아래 <loc>의 도메인을 실 도메인으로 교체할 것.
+  새 케이스 스터디를 추가할 때마다 <url> 블록을 한 줄 늘리면 된다.
+-->
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <url>
+    <loc>https://kyunghwan.dev/</loc>
+    <changefreq>monthly</changefreq>
+    <priority>1.0</priority>
+  </url>
+  <url>
+    <loc>https://kyunghwan.dev/projects/seller-backoffice</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+</urlset>

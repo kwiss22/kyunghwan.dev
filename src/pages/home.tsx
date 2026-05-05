@@ -2,6 +2,7 @@ import { ArrowUpRight } from "lucide-react";
 import { Link } from "react-router-dom";
 
 import { buttonVariants } from "@/components/ui/button";
+import { useSeo } from "@/hooks/use-seo";
 
 type CaseStudy = {
   slug: string;
@@ -23,6 +24,12 @@ const caseStudies: CaseStudy[] = [
 ];
 
 export function HomePage() {
+  useSeo({
+    title: "kyunghwan.dev",
+    description:
+      "신경환 — 프로덕트 엔지니어 포트폴리오. 케이스 스터디 중심으로 의사결정과 임팩트를 정리합니다.",
+  });
+
   return (
     <div className="mx-auto w-full max-w-5xl px-6 py-16 md:py-24">
       <section className="max-w-2xl">

@@ -1,0 +1,5 @@
+User-agent: *
+Allow: /
+
+# 배포 도메인이 정해지면 아래 줄의 도메인을 실 도메인으로 교체할 것.
+Sitemap: https://kyunghwan.dev/sitemap.xml

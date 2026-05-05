@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
+  <style>
+    .bg { fill: oklch(0.99 0.005 95); }
+    .fg { fill: oklch(0.18 0.02 265); }
+    @media (prefers-color-scheme: dark) {
+      .bg { fill: oklch(0.16 0.02 265); }
+      .fg { fill: oklch(0.96 0.005 95); }
+    }
+  </style>
+  <rect class="bg" width="32" height="32" rx="6" />
+  <text
+    class="fg"
+    x="16"
+    y="22"
+    text-anchor="middle"
+    font-family="ui-sans-serif, system-ui, -apple-system, sans-serif"
+    font-size="18"
+    font-weight="600"
+    letter-spacing="-1"
+  >k.</text>
+</svg>

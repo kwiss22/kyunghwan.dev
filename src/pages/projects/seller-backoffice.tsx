@@ -1,14 +1,23 @@
 import { ArrowLeft, ArrowUp } from "lucide-react";
 import { Link } from "react-router-dom";
 
+import { Figure } from "@/components/case-study/figure";
 import { Iteration } from "@/components/case-study/iteration";
 import { Metric } from "@/components/case-study/metric";
 import { PullQuote } from "@/components/case-study/pull-quote";
 import { Section } from "@/components/case-study/section";
 import { Tldr } from "@/components/case-study/tldr";
 import { TodoBlock } from "@/components/case-study/todo-block";
+import { useSeo } from "@/hooks/use-seo";
 
 export function SellerBackofficePage() {
+  useSeo({
+    title: "Seller Backoffice 리디자인",
+    description:
+      "셀러가 매일 쓰는 운영 도구를 처음부터 다시 설계한 케이스 스터디. 문제 정의, 가설, 디자인 이터레이션, 출시 후 측정까지.",
+    type: "article",
+  });
+
   return (
     <article className="mx-auto w-full max-w-3xl px-6 py-16 md:py-24">
       <Link
@@ -147,9 +156,12 @@ export function SellerBackofficePage() {
             decision="killed"
             reason="TODO — 왜 버렸는지. (예: 유저 테스트에서 80%가 메뉴 위치를 못 찾음)"
           >
-            <TodoBlock hint="이 시안에서 무엇을 시도했는지 2~3문장. 가능하면 스크린샷이나 와이어 이미지를 같이.">
-              <p>이미지는 W2 후반에 추가합니다 — 일단 텍스트만.</p>
-            </TodoBlock>
+            <TodoBlock hint="이 시안에서 무엇을 시도했는지 2~3문장." />
+            <Figure
+              placeholder
+              hint="v1 와이어프레임 또는 스크린샷. 이미지를 /public 에 두고 src='/iterations/v1.png' 식으로 연결."
+              caption="TODO — 캡션. 이 시안에서 어떤 IA를 시도했는지 한 줄."
+            />
           </Iteration>
 
           <Iteration
