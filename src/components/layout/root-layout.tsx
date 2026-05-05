@@ -1,6 +1,7 @@
-import { Link, Outlet } from "react-router-dom";
+import { Link, NavLink, Outlet } from "react-router-dom";
 
 import { ThemeToggle } from "@/components/theme-toggle";
+import { cn } from "@/lib/utils";
 
 export function RootLayout() {
   return (
@@ -13,7 +14,18 @@ export function RootLayout() {
           >
             kyunghwan.dev
           </Link>
-          <nav className="flex items-center gap-3 text-sm text-muted-foreground">
+          <nav className="flex items-center gap-4 text-sm text-muted-foreground">
+            <NavLink
+              to="/about"
+              className={({ isActive }) =>
+                cn(
+                  "transition-colors hover:text-foreground",
+                  isActive && "text-foreground",
+                )
+              }
+            >
+              about
+            </NavLink>
             <a
               href="mailto:kwiss22@hanyang.ac.kr"
               className="hover:text-foreground transition-colors"
