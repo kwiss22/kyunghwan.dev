@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>허경환 — Product Manager</title>
+<meta name="description" content="기획·UX 리서치·UI 디자인·정책 설계를 하는 PM의 작업 모음.">
+<link rel="preconnect" href="https://cdn.jsdelivr.net">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
+<style>
+:root {
+  --n-50: #FAFAF9;
+  --n-100: #F1EFE8;
+  --n-200: #D3D1C7;
+  --n-400: #888780;
+  --n-500: #6F6E69;
+  --n-600: #5F5E5A;
+  --n-800: #2C2C2A;
+  --n-900: #1A1A19;
+  --p-50: #E1F5EE;
+  --p-500: #1D9E75;
+  --p-700: #0F6E56;
+  --p-900: #04342C;
+  --font-sans: "Pretendard Variable", Pretendard, -apple-system, BlinkMacSystemFont, system-ui, "Apple SD Gothic Neo", sans-serif;
+  --font-mono: ui-monospace, "SF Mono", "JetBrains Mono", Menlo, Consolas, monospace;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: var(--font-sans);
+  background: var(--n-50);
+  color: var(--n-900);
+  -webkit-font-smoothing: antialiased;
+  line-height: 1.7;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+::selection { background: var(--p-50); color: var(--p-900); }
+
+.container {
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 0 32px;
+  width: 100%;
+}
+
+/* === Header === */
+header {
+  padding: 80px 0 60px;
+}
+
+.logo {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 48px;
+}
+.logo-mark {
+  width: 32px; height: 32px;
+  background: var(--n-900);
+  border-radius: 8px;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 600;
+  font-size: 14px;
+  letter-spacing: -0.02em;
+}
+.logo-text {
+  font-size: 14px;
+  color: var(--n-500);
+  font-family: var(--font-mono);
+}
+
+h1 {
+  font-size: clamp(36px, 5vw, 52px);
+  font-weight: 500;
+  line-height: 1.15;
+  letter-spacing: -0.03em;
+  margin-bottom: 20px;
+}
+
+h1 em {
+  font-style: normal;
+  background: linear-gradient(180deg, transparent 65%, var(--p-50) 65%);
+  padding: 0 4px;
+}
+
+.tagline {
+  font-size: 18px;
+  line-height: 1.6;
+  color: var(--n-500);
+  max-width: 540px;
+  margin-bottom: 32px;
+}
+
+.tagline strong {
+  color: var(--n-900);
+  font-weight: 500;
+}
+
+.skill-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.skill-tag {
+  padding: 5px 11px;
+  font-size: 12px;
+  color: var(--n-600);
+  background: white;
+  border: 0.5px solid var(--n-200);
+  border-radius: 99px;
+}
+
+/* === Section === */
+main { flex: 1; }
+
+section {
+  padding: 60px 0;
+  border-top: 0.5px solid var(--n-200);
+}
+
+.section-label {
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--n-400);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  margin-bottom: 24px;
+  font-family: var(--font-mono);
+}
+
+h2 {
+  font-size: 24px;
+  font-weight: 500;
+  letter-spacing: -0.02em;
+  margin-bottom: 32px;
+}
+
+/* Case study list */
+.cases {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.case-link {
+  display: block;
+  padding: 28px;
+  background: white;
+  border: 0.5px solid var(--n-200);
+  border-radius: 12px;
+  text-decoration: none;
+  color: inherit;
+  transition: border-color 0.2s, transform 0.2s;
+  position: relative;
+  overflow: hidden;
+}
+
+.case-link::after {
+  content: "→";
+  position: absolute;
+  top: 28px; right: 28px;
+  color: var(--n-400);
+  font-size: 18px;
+  transition: transform 0.2s, color 0.2s;
+}
+
+.case-link:hover {
+  border-color: var(--p-500);
+  transform: translateY(-1px);
+}
+
+.case-link:hover::after {
+  transform: translateX(4px);
+  color: var(--p-500);
+}
+
+.case-meta {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  font-size: 11px;
+  color: var(--n-400);
+  margin-bottom: 12px;
+  font-family: var(--font-mono);
+  letter-spacing: 0.04em;
+}
+
+.case-meta .dot {
+  width: 4px; height: 4px;
+  background: var(--n-300, var(--n-200));
+  border-radius: 50%;
+}
+
+.case-tag {
+  padding: 3px 8px;
+  background: var(--p-50);
+  color: var(--p-700);
+  border-radius: 99px;
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 0;
+}
+
+.case-title {
+  font-size: 19px;
+  font-weight: 500;
+  color: var(--n-900);
+  margin-bottom: 8px;
+  letter-spacing: -0.015em;
+}
+
+.case-desc {
+  font-size: 14px;
+  color: var(--n-500);
+  line-height: 1.55;
+  max-width: 92%;
+}
+
+/* About */
+.about-text {
+  font-size: 15px;
+  line-height: 1.75;
+  color: var(--n-600);
+}
+
+.about-text p { margin-bottom: 16px; }
+.about-text p:last-child { margin-bottom: 0; }
+.about-text strong { color: var(--n-900); font-weight: 500; }
+
+.contact-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 24px;
+  margin-top: 28px;
+}
+
+.contact-item a {
+  font-size: 14px;
+  color: var(--n-700);
+  text-decoration: none;
+  border-bottom: 0.5px solid var(--n-300, var(--n-200));
+  padding-bottom: 2px;
+  transition: color 0.15s, border-color 0.15s;
+}
+
+.contact-item a:hover {
+  color: var(--p-700);
+  border-color: var(--p-500);
+}
+
+/* Footer */
+footer {
+  padding: 32px 0 48px;
+  border-top: 0.5px solid var(--n-200);
+  margin-top: 60px;
+}
+
+footer p {
+  font-size: 12px;
+  color: var(--n-400);
+  font-family: var(--font-mono);
+}
+
+@media (max-width: 600px) {
+  .container { padding: 0 20px; }
+  header { padding: 48px 0 32px; }
+  section { padding: 40px 0; }
+  .case-link { padding: 20px; }
+  .case-link::after { top: 20px; right: 20px; }
+  .case-desc { max-width: 88%; }
+}
+</style>
+</head>
+<body>
+<div class="container">
+
+<header>
+  <div class="logo">
+    <span class="logo-mark">K</span>
+    <span class="logo-text">kyunghwan.dev</span>
+  </div>
+
+  <h1>
+    문제를 정의하고,<br>
+    <em>정책으로 푸는 사람</em>
+  </h1>
+
+  <p class="tagline">
+    기획·UX 리서치·UI 디자인·정책 설계를 두루 다루는 <strong>Product Manager 허경환</strong>입니다. 화면 너머의 룰을 설계하는 일에 관심이 많습니다.
+  </p>
+
+  <div class="skill-tags">
+    <span class="skill-tag">기획문서</span>
+    <span class="skill-tag">UX 리서치</span>
+    <span class="skill-tag">UI 디자인</span>
+    <span class="skill-tag">데이터·정책 설계</span>
+  </div>
+</header>
+
+<main>
+  <section>
+    <div class="section-label">Case Studies</div>
+    <h2>작업물</h2>
+
+    <div class="cases">
+      <a class="case-link" href="/solo.html">
+        <div class="case-meta">
+          <span class="case-tag">PM Portfolio</span>
+          <span class="dot"></span>
+          <span>2026 · 4주 단독 기획</span>
+        </div>
+        <div class="case-title">Solo — 1인 프리랜서를 위한 프로젝트·정산 통합 도구</div>
+        <div class="case-desc">
+          흩어진 견적·계약·인보이스를 하나의 데이터 흐름으로. 머릿속 룰을 시스템의 룰로 옮기는 설계 과정을 정리했습니다.
+        </div>
+      </a>
+    </div>
+  </section>
+
+  <section>
+    <div class="section-label">About</div>
+    <h2>소개</h2>
+
+    <div class="about-text">
+      <p>
+        문제 정의에서 정책 설계까지, 제품의 <strong>보이지 않는 부분</strong>을 다루는 일에 가장 흥미를 느낍니다. 화면 한 줄 뒤의 결정 트리, 자동 계산 한 클릭 뒤의 데이터 흐름 — 사용자가 의식하지 못하는 곳에서 좋은 제품이 만들어진다고 믿습니다.
+      </p>
+      <p>
+        화면정의서·기획문서를 잘 쓰는 편이며, 디자인 시스템의 일관성에 민감합니다. 새로운 도구·도메인을 만나면 페르소나부터 정책 매트릭스까지 한 사이클을 정리해보는 습관이 있습니다.
+      </p>
+    </div>
+
+    <div class="contact-list">
+      <div class="contact-item"><a href="mailto:contact@kyunghwan.dev">Email</a></div>
+      <div class="contact-item"><a href="#">LinkedIn</a></div>
+      <div class="contact-item"><a href="#">GitHub</a></div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <p>© 2026 Kyunghwan Heo · Built with care</p>
+</footer>
+
+</div>
+</body>
+</html>
