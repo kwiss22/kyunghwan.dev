@@ -1,0 +1,2125 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Solo — 인터랙티브 데모 | Kyunghwan Heo</title>
+<meta name="description" content="Solo의 5개 핵심 화면을 24개 핀으로 풀어낸 인터랙티브 데모.">
+<link rel="preconnect" href="https://cdn.jsdelivr.net">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
+<style>
+:root {
+  --n-50: #FAFAF9; --n-100: #F1EFE8; --n-200: #D3D1C7; --n-300: #B4B2A9;
+  --n-400: #888780; --n-500: #6F6E69; --n-600: #5F5E5A; --n-700: #444441;
+  --n-800: #2C2C2A; --n-900: #1A1A19;
+  --p-50: #E1F5EE; --p-200: #9FE1CB; --p-300: #5DCAA5;
+  --p-500: #1D9E75; --p-700: #0F6E56; --p-900: #04342C;
+  --info-50: #E6F1FB; --info-200: #B5D4F4; --info-500: #378ADD;
+  --info-700: #185FA5; --info-900: #042C53;
+  --warn-50: #FAEEDA; --warn-200: #FAC775; --warn-500: #EF9F27;
+  --warn-700: #854F0B; --warn-900: #412402;
+  --danger-50: #FCEBEB; --danger-500: #E24B4A; --danger-700: #A32D2D;
+  --font-sans: "Pretendard Variable", Pretendard, -apple-system, BlinkMacSystemFont, system-ui, "Apple SD Gothic Neo", sans-serif;
+  --font-mono: ui-monospace, "SF Mono", "JetBrains Mono", Menlo, Consolas, monospace;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: var(--font-sans);
+  background: var(--n-100);
+  color: var(--n-900);
+  -webkit-font-smoothing: antialiased;
+  line-height: 1.6;
+  min-height: 100vh;
+}
+
+::selection { background: var(--p-50); color: var(--p-900); }
+a { color: inherit; text-decoration: none; }
+button { font-family: inherit; cursor: pointer; border: none; background: none; }
+
+/* === Top bar === */
+.topbar {
+  position: sticky; top: 0; z-index: 50;
+  background: rgba(250, 250, 249, 0.92);
+  backdrop-filter: saturate(180%) blur(14px);
+  -webkit-backdrop-filter: saturate(180%) blur(14px);
+  border-bottom: 0.5px solid var(--n-200);
+  padding: 14px 32px;
+}
+.topbar-inner {
+  max-width: 1400px; margin: 0 auto;
+  display: flex; align-items: center; justify-content: space-between;
+}
+.topbar-back {
+  display: flex; align-items: center; gap: 8px;
+  font-size: 13px; color: var(--n-600);
+  transition: color 0.15s;
+}
+.topbar-back:hover { color: var(--p-700); }
+.topbar-title { font-size: 13px; color: var(--n-500); font-family: var(--font-mono); }
+.topbar-link {
+  font-size: 12px; color: var(--n-600);
+  border-bottom: 0.5px solid var(--n-300);
+  padding-bottom: 1px;
+}
+.topbar-link:hover { color: var(--p-700); border-color: var(--p-500); }
+
+/* === Hero === */
+.hero {
+  max-width: 1400px; margin: 0 auto;
+  padding: 56px 32px 28px;
+  text-align: center;
+}
+.hero-tag {
+  display: inline-flex; align-items: center; gap: 6px;
+  font-size: 12px; color: var(--p-700);
+  background: var(--p-50);
+  padding: 5px 11px; border-radius: 99px;
+  margin-bottom: 18px;
+}
+.hero-tag .dot {
+  width: 6px; height: 6px;
+  background: var(--p-500); border-radius: 50%;
+  animation: pulse 2s ease-in-out infinite;
+}
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.4; }
+}
+.hero h1 {
+  font-size: clamp(28px, 4vw, 42px);
+  font-weight: 500; letter-spacing: -0.025em;
+  line-height: 1.2; margin-bottom: 16px;
+}
+.hero h1 em {
+  font-style: normal;
+  background: linear-gradient(180deg, transparent 60%, var(--p-50) 60%);
+  padding: 0 4px;
+}
+.hero p {
+  font-size: 16px; color: var(--n-500);
+  max-width: 640px; margin: 0 auto 22px;
+}
+.hero-instruction {
+  display: inline-flex; align-items: center; gap: 10px;
+  padding: 8px 16px;
+  background: white;
+  border: 0.5px solid var(--n-200);
+  border-radius: 99px;
+  font-size: 13px; color: var(--n-600);
+}
+.hero-instruction .pin-demo {
+  width: 22px; height: 22px;
+  background: var(--p-500); color: white;
+  border-radius: 50%;
+  display: inline-flex; align-items: center; justify-content: center;
+  font-size: 11px; font-weight: 600; font-family: var(--font-mono);
+  box-shadow: 0 0 0 4px rgba(29, 158, 117, 0.18);
+}
+
+/* === Tabs === */
+.tab-section {
+  max-width: 1400px; margin: 0 auto;
+  padding: 0 32px 16px;
+}
+.tabs {
+  display: flex; gap: 4px;
+  background: white;
+  border: 0.5px solid var(--n-200);
+  border-radius: 12px;
+  padding: 6px;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+.tabs::-webkit-scrollbar { display: none; }
+.tab {
+  flex: 1; min-width: max-content;
+  padding: 10px 16px;
+  border-radius: 8px;
+  display: flex; align-items: center; gap: 8px;
+  font-size: 13px; color: var(--n-500);
+  font-weight: 500; white-space: nowrap;
+  transition: background 0.15s, color 0.15s;
+}
+.tab:hover { background: var(--n-100); color: var(--n-900); }
+.tab.active { background: var(--n-900); color: white; }
+.tab .num {
+  width: 22px; height: 22px;
+  background: var(--n-100); color: var(--n-700);
+  border-radius: 50%;
+  display: inline-flex; align-items: center; justify-content: center;
+  font-size: 10px; font-weight: 600; font-family: var(--font-mono);
+}
+.tab.active .num { background: rgba(255, 255, 255, 0.2); color: white; }
+.tab .pin-count { font-size: 10px; color: var(--n-400); font-family: var(--font-mono); }
+.tab.active .pin-count { color: rgba(255, 255, 255, 0.65); }
+
+/* === Demo === */
+.demo-section {
+  max-width: 1400px; margin: 0 auto;
+  padding: 0 32px 32px;
+}
+.demo-frame {
+  position: relative;
+  background: white;
+  border: 0.5px solid var(--n-200);
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 24px 60px -24px rgba(26, 26, 25, 0.18), 0 8px 18px -8px rgba(26, 26, 25, 0.08);
+}
+.demo-bar {
+  background: var(--n-100);
+  padding: 12px 18px;
+  display: flex; align-items: center; gap: 8px;
+  border-bottom: 0.5px solid var(--n-200);
+}
+.demo-bar .traffic { display: flex; gap: 6px; }
+.demo-bar .traffic span {
+  width: 11px; height: 11px;
+  border-radius: 50%; background: var(--n-200);
+}
+.demo-bar .url {
+  margin-left: 12px;
+  background: white;
+  border: 0.5px solid var(--n-200);
+  padding: 4px 14px;
+  border-radius: 6px;
+  font-size: 12px; color: var(--n-500);
+  font-family: var(--font-mono);
+  flex: 1; max-width: 360px; text-align: center;
+}
+
+/* === App shell === */
+.app {
+  display: grid;
+  grid-template-columns: 200px 1fr;
+  min-height: 700px;
+  position: relative;
+}
+.app.hidden { display: none; }
+
+.sidebar {
+  background: var(--n-100);
+  padding: 22px 16px;
+  border-right: 0.5px solid var(--n-200);
+}
+.sidebar-brand {
+  display: flex; align-items: center; gap: 9px;
+  margin-bottom: 28px; padding: 0 6px;
+}
+.sidebar-brand .logo {
+  width: 26px; height: 26px;
+  background: var(--p-500); color: white;
+  border-radius: 7px;
+  display: flex; align-items: center; justify-content: center;
+  font-weight: 600; font-size: 13px;
+}
+.sidebar-brand .name { font-size: 14px; font-weight: 500; color: var(--n-900); }
+.sidebar-nav { display: flex; flex-direction: column; gap: 3px; }
+.sidebar-nav-item {
+  height: 34px; padding: 0 11px;
+  border-radius: 6px;
+  display: flex; align-items: center; gap: 9px;
+  font-size: 13px; color: var(--n-500);
+}
+.sidebar-nav-item.active { background: white; color: var(--n-900); font-weight: 500; }
+.sidebar-nav-item .ico { width: 14px; height: 14px; flex-shrink: 0; }
+.sidebar-nav-item .count {
+  margin-left: auto;
+  font-size: 11px; color: var(--n-400);
+  font-family: var(--font-mono);
+}
+
+.main {
+  background: white;
+  padding: 28px 32px;
+  display: flex; flex-direction: column;
+  gap: 18px;
+}
+
+.main-header { display: flex; justify-content: space-between; align-items: flex-start; gap: 16px; }
+.main-header h2 { font-size: 22px; font-weight: 500; color: var(--n-900); margin-bottom: 4px; }
+.main-header .sub { font-size: 13px; color: var(--n-500); }
+
+.main-cta {
+  height: 36px; padding: 0 16px;
+  background: var(--p-500); color: white;
+  border-radius: 7px;
+  display: flex; align-items: center; gap: 6px;
+  font-size: 13px; font-weight: 500;
+}
+.btn-secondary {
+  height: 36px; padding: 0 14px;
+  background: white;
+  border: 0.5px solid var(--n-200);
+  color: var(--n-900);
+  border-radius: 7px;
+  display: flex; align-items: center; gap: 6px;
+  font-size: 13px;
+}
+.btn-ghost {
+  height: 36px; padding: 0 14px;
+  background: white;
+  border: 0.5px solid var(--n-200);
+  color: var(--n-500);
+  border-radius: 7px;
+  display: flex; align-items: center;
+  font-size: 13px;
+}
+.main-actions { display: flex; gap: 8px; flex-shrink: 0; }
+
+.breadcrumb {
+  display: flex; align-items: center; gap: 6px;
+  font-size: 12px; color: var(--n-400);
+}
+.breadcrumb .sep { color: var(--n-300); }
+.breadcrumb .current { color: var(--n-900); font-weight: 500; }
+
+/* === HOTSPOT PINS === */
+.pin {
+  position: absolute;
+  width: 32px; height: 32px;
+  background: var(--p-500); color: white;
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 13px; font-weight: 600; font-family: var(--font-mono);
+  cursor: pointer;
+  z-index: 10;
+  box-shadow: 0 0 0 6px rgba(29, 158, 117, 0.18), 0 4px 12px rgba(29, 158, 117, 0.4);
+  transition: transform 0.18s, box-shadow 0.18s;
+  border: 2px solid white;
+  user-select: none;
+  padding: 0;
+}
+.pin:hover {
+  transform: scale(1.12);
+  box-shadow: 0 0 0 9px rgba(29, 158, 117, 0.25), 0 6px 18px rgba(29, 158, 117, 0.5);
+}
+.pin.active {
+  background: var(--n-900);
+  box-shadow: 0 0 0 6px rgba(26, 26, 25, 0.18), 0 4px 12px rgba(26, 26, 25, 0.4);
+}
+.pin::before {
+  content: "";
+  position: absolute; inset: -2px;
+  border-radius: 50%;
+  border: 2px solid var(--p-500);
+  opacity: 0.5;
+  animation: ringPulse 2.4s ease-out infinite;
+}
+.pin.active::before { display: none; }
+@keyframes ringPulse {
+  0% { transform: scale(1); opacity: 0.5; }
+  100% { transform: scale(1.6); opacity: 0; }
+}
+
+/* === Popover === */
+.popover {
+  position: fixed;
+  z-index: 100;
+  width: min(420px, calc(100vw - 32px));
+  background: white;
+  border: 0.5px solid var(--n-200);
+  border-radius: 14px;
+  box-shadow: 0 24px 60px -16px rgba(26, 26, 25, 0.32), 0 8px 18px -6px rgba(26, 26, 25, 0.12);
+  padding: 22px 24px;
+  opacity: 0;
+  pointer-events: none;
+  transform: translateY(8px);
+  transition: opacity 0.16s, transform 0.16s;
+}
+.popover.show { opacity: 1; pointer-events: auto; transform: translateY(0); }
+.popover-header {
+  display: flex; align-items: center; justify-content: space-between;
+  gap: 12px; margin-bottom: 14px;
+}
+.popover-num {
+  display: inline-flex; align-items: center; gap: 8px;
+  font-size: 11px; font-weight: 500;
+  color: var(--p-700);
+  letter-spacing: 0.06em; text-transform: uppercase;
+}
+.popover-num .pin-circle {
+  width: 22px; height: 22px;
+  background: var(--p-500); color: white;
+  border-radius: 50%;
+  display: inline-flex; align-items: center; justify-content: center;
+  font-size: 11px; font-weight: 600; font-family: var(--font-mono);
+}
+.popover-close {
+  width: 28px; height: 28px;
+  border-radius: 50%;
+  background: var(--n-100); color: var(--n-600);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 14px;
+  transition: background 0.15s;
+}
+.popover-close:hover { background: var(--n-200); color: var(--n-900); }
+.popover h3 {
+  font-size: 17px; font-weight: 500;
+  color: var(--n-900);
+  letter-spacing: -0.015em;
+  margin-bottom: 10px;
+  line-height: 1.4;
+}
+.popover p {
+  font-size: 13px; line-height: 1.65;
+  color: var(--n-600);
+  margin-bottom: 12px;
+}
+.popover p strong { color: var(--n-900); font-weight: 500; }
+.popover-tag {
+  display: inline-flex; align-items: center; gap: 5px;
+  font-size: 10px; font-weight: 500;
+  padding: 4px 9px;
+  background: var(--info-50); color: var(--info-700);
+  border-radius: 99px;
+  letter-spacing: 0.04em;
+  margin-top: 4px;
+}
+
+/* === Bottom CTA === */
+.bottom-cta {
+  max-width: 1400px; margin: 60px auto 0;
+  padding: 56px 32px 80px;
+  text-align: center;
+  border-top: 0.5px solid var(--n-200);
+}
+.bottom-cta h2 { font-size: 24px; font-weight: 500; letter-spacing: -0.02em; margin-bottom: 12px; }
+.bottom-cta p { font-size: 14px; color: var(--n-500); margin-bottom: 28px; }
+.bottom-cta-buttons {
+  display: flex; gap: 12px; justify-content: center; flex-wrap: wrap;
+}
+.bottom-cta-btn {
+  display: inline-flex; align-items: center; gap: 8px;
+  padding: 12px 24px;
+  border-radius: 8px;
+  font-size: 14px; font-weight: 500;
+  transition: transform 0.15s, border-color 0.15s;
+}
+.bottom-cta-btn.primary { background: var(--n-900); color: white; }
+.bottom-cta-btn.primary:hover { transform: translateY(-1px); }
+.bottom-cta-btn.secondary {
+  background: white; color: var(--n-900);
+  border: 0.5px solid var(--n-200);
+}
+.bottom-cta-btn.secondary:hover { border-color: var(--p-500); color: var(--p-700); }
+
+footer {
+  text-align: center;
+  padding: 40px 32px 60px;
+  font-size: 12px; color: var(--n-400);
+  font-family: var(--font-mono);
+}
+footer a { color: var(--n-600); border-bottom: 0.5px solid var(--n-200); padding-bottom: 1px; }
+footer a:hover { color: var(--p-700); border-color: var(--p-500); }
+
+/* Responsive */
+@media (max-width: 980px) {
+  .demo-frame { overflow-x: auto; }
+  .app { min-width: 1100px; }
+  .demo-bar .url { font-size: 10px; max-width: 240px; }
+  .pin::before { animation: none; opacity: 0; }
+}
+@media (max-width: 640px) {
+  .hero { padding: 40px 20px 20px; }
+  .hero h1 { font-size: 26px; }
+  .hero p { font-size: 14px; }
+  .demo-section { padding: 0 16px 28px; }
+  .tab-section { padding: 0 16px 12px; }
+  .topbar { padding: 12px 20px; }
+}
+</style>
+</head>
+<body>
+
+<nav class="topbar">
+  <div class="topbar-inner">
+    <a href="index.html" class="topbar-back">
+      <span>←</span><span>포트폴리오로 돌아가기</span>
+    </a>
+    <span class="topbar-title">Solo · Interactive Demo</span>
+    <a href="solo.html" class="topbar-link">상세 케이스 스터디 →</a>
+  </div>
+</nav>
+
+<section class="hero">
+  <div class="hero-tag">
+    <span class="dot"></span>
+    Interactive Hotspot Demo
+  </div>
+  <h1>5개 화면, <em>24개의 설계 의도</em></h1>
+  <p>
+    Solo의 핵심 화면 5개를 인터랙티브하게 풀어냅니다. 화면 위 핀을 클릭하면 그 자리에 왜 그 결정을 내렸는지 설명이 떠오릅니다.
+  </p>
+  <div class="hero-instruction">
+    <span class="pin-demo">1</span>
+    <span>화면 위의 핀을 클릭해보세요</span>
+  </div>
+</section>
+
+<section class="tab-section">
+  <div class="tabs" role="tablist">
+    <button class="tab active" data-screen="dashboard" role="tab">
+      <span class="num">1</span>
+      <span>대시보드</span>
+      <span class="pin-count">6 pins</span>
+    </button>
+    <button class="tab" data-screen="quote" role="tab">
+      <span class="num">2</span>
+      <span>견적 작성 ⭐</span>
+      <span class="pin-count">6 pins</span>
+    </button>
+    <button class="tab" data-screen="invoice" role="tab">
+      <span class="num">3</span>
+      <span>인보이스</span>
+      <span class="pin-count">4 pins</span>
+    </button>
+    <button class="tab" data-screen="project" role="tab">
+      <span class="num">4</span>
+      <span>프로젝트</span>
+      <span class="pin-count">4 pins</span>
+    </button>
+    <button class="tab" data-screen="client" role="tab">
+      <span class="num">5</span>
+      <span>클라이언트</span>
+      <span class="pin-count">4 pins</span>
+    </button>
+  </div>
+</section>
+
+<style>
+/* === Screen-specific styles === */
+
+/* === Stats / Cards (대시보드) === */
+.stats {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 12px;
+}
+.stat-card {
+  background: white;
+  border: 0.5px solid var(--n-200);
+  border-radius: 8px;
+  padding: 16px;
+  position: relative;
+}
+.stat-card.warn { border-color: var(--warn-500); }
+.stat-card .lbl { font-size: 11px; color: var(--n-400); margin-bottom: 8px; }
+.stat-card.warn .lbl { color: var(--warn-700); display: flex; align-items: center; gap: 4px; }
+.stat-card .val {
+  font-size: 22px; font-weight: 500;
+  color: var(--n-900);
+  font-family: var(--font-mono);
+  letter-spacing: -0.02em;
+}
+.stat-card.warn .val { color: var(--warn-700); }
+.stat-card .sub { margin-top: 6px; font-size: 11px; color: var(--n-500); }
+.stat-card.warn .sub { color: var(--warn-700); }
+.stat-card .sub.up { color: var(--p-700); display: flex; align-items: center; gap: 4px; }
+
+.bottom-grid {
+  display: grid;
+  grid-template-columns: 1.4fr 1fr;
+  gap: 16px;
+}
+.panel {
+  background: white;
+  border: 0.5px solid var(--n-200);
+  border-radius: 8px;
+  overflow: hidden;
+}
+.panel-header {
+  padding: 14px 16px;
+  border-bottom: 0.5px solid var(--n-100);
+  display: flex; justify-content: space-between; align-items: center;
+}
+.panel-header .title { font-size: 14px; font-weight: 500; color: var(--n-900); }
+.panel-header .more { font-size: 11px; color: var(--p-700); }
+
+.proj-row {
+  display: flex; align-items: center; gap: 12px;
+  padding: 12px 16px;
+  border-bottom: 0.5px solid var(--n-100);
+}
+.proj-row:last-child { border-bottom: none; }
+.proj-row .av {
+  width: 32px; height: 32px;
+  border-radius: 6px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 12px; font-weight: 500;
+  flex-shrink: 0;
+}
+.proj-row .av.a { background: var(--info-50); color: var(--info-700); }
+.proj-row .av.b { background: var(--warn-50); color: var(--warn-700); }
+.proj-row .av.c { background: #EEEDFE; color: #3C3489; }
+.proj-row .info { flex: 1; min-width: 0; }
+.proj-row .info .name { font-size: 13px; font-weight: 500; color: var(--n-900); margin-bottom: 2px; }
+.proj-row .info .meta { font-size: 11px; color: var(--n-500); }
+.proj-row .right { display: flex; flex-direction: column; align-items: flex-end; gap: 4px; }
+.proj-row .pill {
+  height: 20px; padding: 0 8px;
+  border-radius: 10px;
+  display: inline-flex; align-items: center;
+  font-size: 10px; font-weight: 500;
+}
+.proj-row .pill.info { background: var(--info-50); color: var(--info-700); }
+.proj-row .pill.warn { background: var(--warn-50); color: var(--warn-700); }
+.proj-row .amt { font-size: 11px; color: var(--n-900); font-family: var(--font-mono); }
+
+.recv-row { padding: 12px 16px; border-bottom: 0.5px solid var(--n-100); }
+.recv-row:last-child { border-bottom: none; }
+.recv-row.late { background: var(--danger-50); }
+.recv-row .top { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 6px; }
+.recv-row .name { font-size: 12px; color: var(--n-900); font-weight: 500; }
+.recv-row .badge {
+  height: 18px; padding: 0 6px;
+  background: white;
+  border-radius: 9px;
+  display: inline-flex; align-items: center;
+  font-size: 9px; font-weight: 500;
+  color: var(--danger-700);
+}
+.recv-row .due { font-size: 10px; color: var(--n-500); }
+.recv-row.late .due { color: var(--danger-700); font-weight: 500; }
+.recv-row .amt {
+  font-size: 13px; font-family: var(--font-mono); font-weight: 500;
+  color: var(--n-900);
+}
+.recv-row.late .amt { color: var(--danger-700); }
+.recv-row .amt.row-amt-with-action { margin-bottom: 6px; }
+.recv-row .action-btn {
+  height: 24px; padding: 0 10px;
+  background: var(--n-900); color: white;
+  border-radius: 4px;
+  display: inline-flex; align-items: center;
+  font-size: 10px; font-weight: 500;
+}
+
+/* === Quote editor (견적 작성) === */
+.quote-grid {
+  display: grid;
+  grid-template-columns: 1fr 0.85fr;
+  gap: 16px;
+}
+.q-block {
+  border-radius: 8px;
+  padding: 14px;
+  margin-bottom: 12px;
+  position: relative;
+}
+.q-block.auto {
+  background: var(--info-50);
+  border: 0.5px solid var(--info-200);
+}
+.q-block.manual {
+  background: white;
+  border: 0.5px solid var(--n-200);
+}
+.q-block .badge-auto {
+  position: absolute; top: 12px; right: 14px;
+  display: flex; align-items: center; gap: 4px;
+  font-size: 10px; color: var(--info-700);
+  font-weight: 500;
+}
+.q-block .h {
+  font-size: 13px; font-weight: 500;
+  margin-bottom: 12px;
+  color: var(--n-900);
+}
+.q-block.auto .h { color: var(--info-700); }
+.q-fields { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.q-field {
+  background: white;
+  height: 32px;
+  border-radius: 5px;
+  padding: 0 10px;
+  display: flex; align-items: center;
+  font-size: 12px; color: var(--n-900);
+}
+.q-block.manual .q-field {
+  background: var(--n-50); border: 0.5px solid var(--n-200);
+}
+.q-field .lbl { font-size: 10px; color: var(--info-700); margin-bottom: 4px; display: block; }
+.q-field-wrap { display: flex; flex-direction: column; }
+.q-field-wrap .lbl { font-size: 10px; color: var(--info-700); margin-bottom: 4px; }
+.q-block.manual .q-field-wrap .lbl { color: var(--n-500); }
+.q-mono { font-family: var(--font-mono); }
+.q-items {
+  display: flex; flex-direction: column; gap: 6px;
+}
+.q-item-row {
+  display: grid;
+  grid-template-columns: 2fr 0.6fr 1.1fr 1.1fr;
+  gap: 10px;
+  padding: 8px 0;
+  align-items: center;
+  font-size: 12px;
+  border-bottom: 0.5px solid var(--n-100);
+}
+.q-item-row:last-child { border-bottom: none; }
+.q-item-row .name { color: var(--n-900); display: flex; align-items: center; gap: 6px; }
+.q-item-row .qty, .q-item-row .price {
+  text-align: right;
+  font-family: var(--font-mono);
+  color: var(--n-700);
+}
+.q-item-row .total {
+  text-align: right;
+  font-family: var(--font-mono);
+  font-weight: 500;
+  color: var(--n-900);
+}
+.q-edited-badge {
+  height: 16px; padding: 0 6px;
+  background: var(--warn-50); color: var(--warn-700);
+  border-radius: 8px;
+  display: inline-flex; align-items: center;
+  font-size: 9px; font-weight: 500;
+}
+.q-totals {
+  display: flex; flex-direction: column; gap: 6px;
+}
+.q-totals-row { display: flex; justify-content: space-between; align-items: center; }
+.q-totals-row .l { font-size: 12px; color: var(--info-700); display: flex; align-items: center; gap: 6px; }
+.q-totals-row .v { font-size: 13px; color: var(--n-900); font-family: var(--font-mono); }
+.q-help-ico {
+  width: 16px; height: 16px;
+  border-radius: 50%;
+  background: white;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 10px;
+  color: var(--info-700);
+  cursor: help;
+}
+.q-totals-final {
+  display: flex; justify-content: space-between; align-items: center;
+  padding-top: 10px;
+  border-top: 0.5px solid var(--info-200);
+}
+.q-totals-final .l { font-size: 13px; color: var(--info-700); font-weight: 500; }
+.q-totals-final .v { font-size: 18px; color: var(--n-900); font-family: var(--font-mono); font-weight: 500; }
+.q-tax-help {
+  margin-top: 12px;
+  padding: 10px 12px;
+  background: white;
+  border-radius: 6px;
+  display: flex; gap: 8px;
+  align-items: flex-start;
+}
+.q-tax-help-ico {
+  font-size: 16px; color: var(--info-700); flex-shrink: 0;
+}
+.q-tax-help-text { font-size: 11px; color: var(--n-600); line-height: 1.55; }
+.q-tax-help-text strong { color: var(--n-900); font-weight: 500; }
+
+.q-preview {
+  background: white;
+  border: 0.5px solid var(--n-200);
+  border-radius: 8px;
+  padding: 16px 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  position: relative;
+}
+.q-preview-label {
+  display: flex; align-items: center; gap: 6px;
+  font-size: 11px; color: var(--n-500);
+  margin-bottom: 4px;
+}
+.q-preview-label .green-dot {
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  background: var(--p-500);
+  display: inline-block;
+}
+.q-preview-h {
+  display: flex; justify-content: space-between;
+  padding-bottom: 8px;
+  border-bottom: 0.5px solid var(--n-900);
+}
+.q-preview-h .title { font-size: 14px; font-weight: 500; color: var(--n-900); }
+.q-preview-h .num { font-size: 10px; color: var(--n-500); font-family: var(--font-mono); }
+.q-preview-row { display: flex; justify-content: space-between; font-size: 11px; }
+.q-preview-row .a { color: var(--n-700); }
+.q-preview-row .b { color: var(--n-900); font-family: var(--font-mono); }
+.q-preview-total {
+  display: flex; justify-content: space-between;
+  padding-top: 8px; margin-top: auto;
+  border-top: 0.5px solid var(--n-900);
+  font-weight: 500; color: var(--n-900);
+}
+.q-preview-total .v { font-family: var(--font-mono); font-size: 14px; }
+
+/* === Invoice tracking === */
+.inv-stats {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 12px;
+}
+.inv-stat {
+  background: white;
+  border: 0.5px solid var(--n-200);
+  border-radius: 8px;
+  padding: 14px;
+}
+.inv-stat.info { border-color: var(--info-200); }
+.inv-stat.warn { border-color: var(--warn-500); }
+.inv-stat.success { background: var(--p-50); border: none; }
+.inv-stat .l { font-size: 11px; color: var(--n-400); margin-bottom: 6px; display: flex; align-items: center; gap: 4px; }
+.inv-stat.info .l { color: var(--info-700); }
+.inv-stat.warn .l { color: var(--warn-700); }
+.inv-stat.success .l { color: var(--p-700); }
+.inv-stat .v {
+  font-size: 22px; font-weight: 500;
+  color: var(--n-900);
+  font-family: var(--font-mono);
+}
+.inv-stat.warn .v { color: var(--warn-700); }
+.inv-stat.info .v { color: var(--info-700); }
+.inv-stat.success .v { color: var(--p-700); }
+.inv-stat .sub { margin-top: 4px; font-size: 11px; color: var(--n-500); font-family: var(--font-mono); }
+.inv-stat.info .sub { color: var(--info-700); }
+.inv-stat.warn .sub { color: var(--warn-700); }
+.inv-stat.success .sub { color: var(--p-700); }
+
+.inv-table {
+  background: white;
+  border: 0.5px solid var(--n-200);
+  border-radius: 8px;
+  overflow: hidden;
+}
+.inv-table-header {
+  display: grid;
+  grid-template-columns: 80px 2fr 1.4fr 1fr 1fr 110px;
+  gap: 12px;
+  padding: 11px 18px;
+  background: var(--n-50);
+  font-size: 11px;
+  color: var(--n-400);
+  border-bottom: 0.5px solid var(--n-100);
+}
+.inv-table-header > div:nth-child(3) { text-align: right; }
+.inv-row-table {
+  display: grid;
+  grid-template-columns: 80px 2fr 1.4fr 1fr 1fr 110px;
+  gap: 12px;
+  padding: 14px 18px;
+  align-items: center;
+  font-size: 13px;
+  border-bottom: 0.5px solid var(--n-100);
+}
+.inv-row-table:last-child { border-bottom: none; }
+.inv-row-table.late { background: var(--danger-50); }
+.inv-row-table.done { opacity: 0.55; }
+.inv-row-table .pill {
+  height: 22px; padding: 0 8px;
+  border-radius: 11px;
+  display: inline-flex; align-items: center; gap: 4px;
+  font-size: 11px; font-weight: 500;
+}
+.inv-row-table .pill.late { background: white; color: var(--danger-700); }
+.inv-row-table .pill.unpaid { background: var(--info-50); color: var(--info-700); }
+.inv-row-table .pill.done { background: var(--p-50); color: var(--p-700); }
+.inv-row-table .name-block .name { font-size: 13px; color: var(--n-900); font-weight: 500; margin-bottom: 2px; }
+.inv-row-table .name-block .num { font-size: 11px; color: var(--n-400); font-family: var(--font-mono); }
+.inv-row-table .amt {
+  text-align: right;
+  font-size: 14px; font-weight: 500;
+  color: var(--n-900);
+  font-family: var(--font-mono);
+}
+.inv-row-table.late .amt { color: var(--danger-700); }
+.inv-row-table .date { font-size: 11px; color: var(--n-500); font-family: var(--font-mono); }
+.inv-row-table .due { font-size: 11px; color: var(--n-500); }
+.inv-row-table.late .due { color: var(--danger-700); font-weight: 500; }
+.inv-row-table .actions { display: flex; justify-content: flex-end; gap: 6px; }
+.inv-row-table .actions .btn-confirm {
+  height: 26px; padding: 0 10px;
+  background: var(--n-900); color: white;
+  border-radius: 5px;
+  display: flex; align-items: center;
+  font-size: 11px; font-weight: 500;
+}
+.inv-row-table .actions .btn-remind {
+  height: 26px; padding: 0 10px;
+  background: white;
+  border: 0.5px solid var(--n-200);
+  color: var(--n-500);
+  border-radius: 5px;
+  display: flex; align-items: center; gap: 4px;
+  font-size: 11px;
+}
+
+/* === Project detail === */
+.pd-header-card {
+  background: white;
+  border: 0.5px solid var(--n-200);
+  border-radius: 8px;
+  padding: 20px;
+}
+.pd-header-row { display: flex; gap: 14px; align-items: center; }
+.pd-header-row .av {
+  width: 36px; height: 36px;
+  background: var(--info-50); color: var(--info-700);
+  border-radius: 8px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 14px; font-weight: 500;
+  flex-shrink: 0;
+}
+.pd-header-row .info { flex: 1; }
+.pd-header-row .info .title-row {
+  display: flex; align-items: center; gap: 10px;
+}
+.pd-header-row .info .name {
+  font-size: 18px; font-weight: 500;
+  color: var(--n-900);
+}
+.pd-header-row .info .meta {
+  margin-top: 4px;
+  font-size: 12px; color: var(--n-500);
+  display: flex; gap: 8px;
+}
+.pd-header-row .info .meta span { display: flex; align-items: center; gap: 4px; }
+.pd-status-pill {
+  height: 22px; padding: 0 10px;
+  background: var(--info-50); color: var(--info-700);
+  border-radius: 11px;
+  display: flex; align-items: center;
+  font-size: 11px; font-weight: 500;
+}
+
+.pd-tabs {
+  display: flex; gap: 4px;
+  border-bottom: 0.5px solid var(--n-200);
+}
+.pd-tab {
+  padding: 10px 16px;
+  font-size: 13px; color: var(--n-500);
+  margin-bottom: -0.5px;
+}
+.pd-tab.active { color: var(--n-900); font-weight: 500; border-bottom: 2px solid var(--n-900); }
+.pd-tab .count { color: var(--n-400); font-size: 11px; }
+
+.pd-grid {
+  display: grid;
+  grid-template-columns: 1.5fr 1fr;
+  gap: 16px;
+}
+
+.pd-progress {
+  background: white;
+  border: 0.5px solid var(--n-200);
+  border-radius: 8px;
+  padding: 18px;
+  margin-bottom: 12px;
+}
+.pd-progress .h { font-size: 13px; font-weight: 500; color: var(--n-900); margin-bottom: 12px; }
+.pd-bars { display: flex; gap: 6px; align-items: center; margin-bottom: 10px; }
+.pd-bars > div {
+  flex: 1; height: 8px; border-radius: 4px;
+  background: var(--n-100);
+}
+.pd-bars > div.done { background: var(--p-500); }
+.pd-bars > div.now { background: var(--info-500); }
+.pd-stages {
+  display: flex; justify-content: space-between;
+  font-size: 11px;
+}
+.pd-stages .done { color: var(--p-500); display: flex; align-items: center; gap: 3px; }
+.pd-stages .now { color: var(--info-500); font-weight: 500; }
+.pd-stages .next { color: var(--n-400); }
+
+.pd-mile {
+  background: white;
+  border: 0.5px solid var(--n-200);
+  border-radius: 8px;
+  padding: 18px;
+  margin-bottom: 12px;
+}
+.pd-mile .h-row {
+  display: flex; justify-content: space-between; align-items: center;
+  margin-bottom: 12px;
+}
+.pd-mile .h { font-size: 13px; font-weight: 500; color: var(--n-900); }
+.pd-mile .more { font-size: 11px; color: var(--p-700); }
+.pd-mile-row {
+  display: flex; align-items: center; gap: 12px;
+  padding: 10px 12px;
+  background: var(--n-50);
+  border-radius: 6px;
+  margin-bottom: 4px;
+  font-size: 13px;
+}
+.pd-mile-row.now { background: var(--info-50); }
+.pd-mile-row.now .name { font-weight: 500; }
+.pd-mile-row.next { opacity: 0.65; }
+.pd-mile-row .check {
+  width: 20px; height: 20px;
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+  background: var(--n-100);
+}
+.pd-mile-row .check.done { background: var(--p-500); color: white; font-size: 12px; }
+.pd-mile-row .check.now { background: var(--info-500); }
+.pd-mile-row .check.next { background: white; border: 1px solid var(--n-200); }
+.pd-mile-row .name { flex: 1; color: var(--n-900); }
+.pd-mile-row .when { font-size: 11px; color: var(--n-500); font-family: var(--font-mono); }
+.pd-mile-row.now .when { color: var(--info-700); font-weight: 500; }
+.pd-mile-row.now .desc { font-size: 11px; color: var(--info-700); margin-top: 2px; }
+
+.pd-money {
+  background: white;
+  border: 0.5px solid var(--n-200);
+  border-radius: 8px;
+  padding: 16px;
+  margin-bottom: 12px;
+}
+.pd-money .h { font-size: 13px; font-weight: 500; color: var(--n-900); margin-bottom: 12px; }
+.pd-money-row {
+  display: flex; justify-content: space-between; align-items: center;
+  font-size: 12px;
+  margin-bottom: 8px;
+}
+.pd-money-row .a { color: var(--n-500); }
+.pd-money-row .b { font-family: var(--font-mono); font-weight: 500; color: var(--n-900); }
+.pd-money-row.in .a, .pd-money-row.in .b { color: var(--p-700); }
+.pd-money-row.out {
+  padding-top: 10px; margin-top: 6px;
+  border-top: 0.5px dashed var(--n-200);
+}
+.pd-money-row.out .a { color: var(--warn-700); font-weight: 500; }
+.pd-money-row.out .b { color: var(--warn-700); font-size: 16px; }
+
+.pd-activity {
+  background: white;
+  border: 0.5px solid var(--n-200);
+  border-radius: 8px;
+  padding: 16px;
+}
+.pd-activity .h { font-size: 13px; font-weight: 500; color: var(--n-900); margin-bottom: 12px; }
+.pd-activity-row { display: flex; gap: 10px; margin-bottom: 12px; }
+.pd-activity-row:last-child { margin-bottom: 0; }
+.pd-activity-row .dot {
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  background: var(--n-400);
+  margin-top: 6px;
+  flex-shrink: 0;
+}
+.pd-activity-row.recent .dot { background: var(--p-300); }
+.pd-activity-row .text { font-size: 11px; color: var(--n-900); line-height: 1.5; }
+.pd-activity-row .when { font-size: 10px; color: var(--n-400); margin-top: 2px; }
+
+/* === Client detail === */
+.cd-profile {
+  background: white;
+  border: 0.5px solid var(--n-200);
+  border-radius: 8px;
+  padding: 20px;
+}
+.cd-profile-row { display: flex; gap: 16px; align-items: center; }
+.cd-profile-row .av {
+  width: 56px; height: 56px;
+  background: var(--info-50); color: var(--info-700);
+  border-radius: 12px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 22px; font-weight: 500;
+  flex-shrink: 0;
+}
+.cd-profile-row .info { flex: 1; }
+.cd-profile-row .info .name-row {
+  display: flex; align-items: center; gap: 10px;
+  margin-bottom: 6px;
+}
+.cd-profile-row .info .name { font-size: 18px; font-weight: 500; color: var(--n-900); }
+.cd-profile-row .info .meta { display: flex; gap: 14px; font-size: 12px; color: var(--n-500); }
+.cd-profile-row .info .meta span { display: flex; align-items: center; gap: 4px; }
+.cd-biz-pill {
+  height: 22px; padding: 0 10px;
+  background: var(--info-50); color: var(--info-700);
+  border-radius: 11px;
+  display: flex; align-items: center;
+  font-size: 11px; font-weight: 500;
+}
+
+.cd-grid {
+  display: grid;
+  grid-template-columns: 1.5fr 1fr;
+  gap: 16px;
+}
+
+.cd-timeline-h { font-size: 14px; font-weight: 500; color: var(--n-900); margin-bottom: 12px; }
+.cd-timeline {
+  background: white;
+  border: 0.5px solid var(--n-200);
+  border-radius: 8px;
+  padding: 18px;
+}
+.cd-tl-item { position: relative; padding-left: 22px; padding-bottom: 16px; }
+.cd-tl-item:last-child { padding-bottom: 0; }
+.cd-tl-item::before {
+  content: "";
+  position: absolute; left: 0; top: 4px;
+  width: 12px; height: 12px;
+  border-radius: 50%;
+  background: var(--p-500);
+  border: 2px solid white;
+  box-shadow: 0 0 0 0.5px var(--p-500);
+}
+.cd-tl-item.now::before { background: var(--info-500); box-shadow: 0 0 0 0.5px var(--info-500); }
+.cd-tl-item:not(:last-child)::after {
+  content: "";
+  position: absolute;
+  left: 5px; top: 18px; bottom: 0;
+  width: 1px;
+  background: var(--n-200);
+}
+.cd-tl-item .top { display: flex; justify-content: space-between; margin-bottom: 4px; }
+.cd-tl-item .name { font-size: 13px; font-weight: 500; color: var(--n-900); }
+.cd-tl-item .pill {
+  height: 20px; padding: 0 8px;
+  border-radius: 10px;
+  display: inline-flex; align-items: center; gap: 3px;
+  font-size: 10px; font-weight: 500;
+}
+.cd-tl-item .pill.now { background: var(--info-50); color: var(--info-700); }
+.cd-tl-item .pill.done { background: var(--p-50); color: var(--p-700); }
+.cd-tl-item .meta { font-size: 11px; color: var(--n-500); display: flex; gap: 8px; }
+
+.cd-policy {
+  background: var(--info-50);
+  border: 0.5px solid var(--info-200);
+  border-radius: 8px;
+  padding: 16px;
+  margin-bottom: 12px;
+}
+.cd-policy .h-row {
+  display: flex; align-items: center; gap: 6px;
+  margin-bottom: 12px;
+}
+.cd-policy .h-row .h { font-size: 13px; color: var(--info-700); font-weight: 500; }
+.cd-policy-row {
+  display: flex; justify-content: space-between; align-items: center;
+  margin-bottom: 9px;
+}
+.cd-policy-row .a { font-size: 11px; color: var(--info-700); }
+.cd-policy-row .b { font-size: 12px; color: var(--n-900); }
+.cd-policy-row .b.mono { font-family: var(--font-mono); }
+.cd-policy .footer {
+  margin-top: 12px;
+  padding-top: 10px;
+  border-top: 0.5px solid var(--info-200);
+  display: flex; align-items: center; gap: 6px;
+  font-size: 11px; color: var(--info-700);
+}
+
+.cd-insight {
+  background: white;
+  border: 0.5px solid var(--n-200);
+  border-radius: 8px;
+  padding: 16px;
+}
+.cd-insight .h-row {
+  display: flex; align-items: center; gap: 6px;
+  margin-bottom: 12px;
+}
+.cd-insight .h-row .h { font-size: 13px; color: var(--n-900); font-weight: 500; }
+.cd-insight-row { margin-bottom: 12px; }
+.cd-insight-row:last-child { margin-bottom: 0; }
+.cd-insight-row .l { font-size: 11px; color: var(--n-500); margin-bottom: 4px; }
+.cd-insight-row .v {
+  font-size: 16px; font-weight: 500;
+  color: var(--n-900);
+  font-family: var(--font-mono);
+}
+.cd-insight-row .v.medium { font-size: 14px; }
+.cd-trend-tag {
+  display: inline-flex; align-items: center; gap: 3px;
+  margin-left: 8px;
+  font-size: 10px; color: var(--warn-700);
+}
+.cd-chart {
+  height: 40px;
+  display: flex; align-items: flex-end;
+  gap: 4px;
+  margin-top: 6px;
+}
+.cd-chart > div { flex: 1; border-radius: 2px 2px 0 0; }
+</style>
+
+<section class="demo-section">
+  <div class="demo-frame" id="demoFrame">
+    <div class="demo-bar">
+      <div class="traffic"><span></span><span></span><span></span></div>
+      <div class="url" id="demoUrl">solo.app / dashboard</div>
+    </div>
+
+    <!-- ============ SCREEN 1: DASHBOARD ============ -->
+    <div class="app" data-screen="dashboard">
+      <aside class="sidebar">
+        <div class="sidebar-brand"><span class="logo">S</span><span class="name">Solo</span></div>
+        <nav class="sidebar-nav">
+          <div class="sidebar-nav-item active"><span class="ico">📊</span><span>대시보드</span></div>
+          <div class="sidebar-nav-item"><span class="ico">📁</span><span>프로젝트</span><span class="count">8</span></div>
+          <div class="sidebar-nav-item"><span class="ico">👥</span><span>클라이언트</span></div>
+          <div class="sidebar-nav-item"><span class="ico">💰</span><span>정산</span></div>
+          <div class="sidebar-nav-item"><span class="ico">⚙️</span><span>설정</span></div>
+        </nav>
+      </aside>
+      <main class="main">
+        <div class="main-header">
+          <div>
+            <h2>오늘의 요약</h2>
+            <div class="sub">5월 6일 화요일 · 진행 중 3건 · 다음 마일스톤 D-3</div>
+          </div>
+          <button class="main-cta">+ 새 프로젝트</button>
+        </div>
+        <div class="stats">
+          <div class="stat-card">
+            <div class="lbl">이번 달 확정</div>
+            <div class="val">₩3,200,000</div>
+            <div class="sub">5건 입금 완료</div>
+          </div>
+          <div class="stat-card">
+            <div class="lbl">이번 달 예상</div>
+            <div class="val">₩5,800,000</div>
+            <div class="sub up">↑ 전월 대비 +24%</div>
+          </div>
+          <div class="stat-card warn">
+            <div class="lbl">⚠ 미수금</div>
+            <div class="val">₩1,500,000</div>
+            <div class="sub">3건 · 1건 연체</div>
+          </div>
+          <div class="stat-card">
+            <div class="lbl">다음 마일스톤</div>
+            <div class="val">D-3</div>
+            <div class="sub">A사 — 1차 시안 납품</div>
+          </div>
+        </div>
+        <div class="bottom-grid">
+          <div class="panel">
+            <div class="panel-header"><span class="title">진행 중 프로젝트</span><span class="more">전체 →</span></div>
+            <div class="proj-row">
+              <div class="av a">A</div>
+              <div class="info"><div class="name">로고 리뉴얼 + 가이드라인</div><div class="meta">A사 · 4/22 ~ 5/15</div></div>
+              <div class="right"><span class="pill info">작업 중</span><span class="amt">₩3,200,000</span></div>
+            </div>
+            <div class="proj-row">
+              <div class="av b">B</div>
+              <div class="info"><div class="name">컨설팅 — 4월</div><div class="meta">B스튜디오 · 4/1 ~ 4/30</div></div>
+              <div class="right"><span class="pill warn">⚠ 청구 대기</span><span class="amt">₩800,000</span></div>
+            </div>
+            <div class="proj-row">
+              <div class="av c">C</div>
+              <div class="info"><div class="name">웹사이트 와이어프레임</div><div class="meta">C마켓 · 5/1 ~ 5/20</div></div>
+              <div class="right"><span class="pill info">작업 중</span><span class="amt">₩1,800,000</span></div>
+            </div>
+          </div>
+          <div class="panel">
+            <div class="panel-header"><span class="title">미수금</span><span class="more">전체 →</span></div>
+            <div class="recv-row late">
+              <div class="top"><span class="name">D사</span><span class="badge">+5일 연체</span></div>
+              <div class="amt row-amt-with-action">₩500,000</div>
+              <button class="action-btn">입금 확인</button>
+            </div>
+            <div class="recv-row">
+              <div class="top"><span class="name">E사</span><span class="due">D-3</span></div>
+              <div class="amt">₩800,000</div>
+            </div>
+            <div class="recv-row">
+              <div class="top"><span class="name">F스튜디오</span><span class="due">D-22</span></div>
+              <div class="amt">₩200,000</div>
+            </div>
+          </div>
+        </div>
+      </main>
+      <!-- Pins for dashboard -->
+      <button class="pin" data-pin="1" style="top: 110px; left: 60px;" aria-label="핀 1">1</button>
+      <button class="pin" data-pin="2" style="top: 215px; left: 318px;" aria-label="핀 2">2</button>
+      <button class="pin" data-pin="3" style="top: 215px; left: 738px;" aria-label="핀 3">3</button>
+      <button class="pin" data-pin="4" style="top: 380px; left: 240px;" aria-label="핀 4">4</button>
+      <button class="pin" data-pin="5" style="top: 425px; left: 880px;" aria-label="핀 5">5</button>
+      <button class="pin" data-pin="6" style="top: 215px; left: 992px;" aria-label="핀 6">6</button>
+    </div>
+
+    <!-- ============ SCREEN 2: QUOTE EDITOR ============ -->
+    <div class="app hidden" data-screen="quote">
+      <aside class="sidebar">
+        <div class="sidebar-brand"><span class="logo">S</span><span class="name">Solo</span></div>
+        <nav class="sidebar-nav">
+          <div class="sidebar-nav-item"><span class="ico">📊</span><span>대시보드</span></div>
+          <div class="sidebar-nav-item active"><span class="ico">📁</span><span>프로젝트</span><span class="count">8</span></div>
+          <div class="sidebar-nav-item"><span class="ico">👥</span><span>클라이언트</span></div>
+          <div class="sidebar-nav-item"><span class="ico">💰</span><span>정산</span></div>
+          <div class="sidebar-nav-item"><span class="ico">⚙️</span><span>설정</span></div>
+        </nav>
+      </aside>
+      <main class="main">
+        <div class="main-header">
+          <div class="breadcrumb">
+            <span>프로젝트</span><span class="sep">›</span>
+            <span>로고 리뉴얼</span><span class="sep">›</span>
+            <span class="current">새 견적</span>
+          </div>
+          <div class="main-actions">
+            <button class="btn-secondary">📄 PDF 미리보기</button>
+            <button class="btn-ghost">임시저장</button>
+            <button class="main-cta">📤 발송</button>
+          </div>
+        </div>
+
+        <div class="quote-grid">
+          <div>
+            <!-- Auto meta block -->
+            <div class="q-block auto">
+              <div class="badge-auto">⚡ 자동 채워짐</div>
+              <div class="h">기본 정보</div>
+              <div class="q-fields">
+                <div class="q-field-wrap">
+                  <span class="lbl">클라이언트</span>
+                  <div class="q-field">A사</div>
+                </div>
+                <div class="q-field-wrap">
+                  <span class="lbl">견적번호</span>
+                  <div class="q-field q-mono">Q-2026-0042</div>
+                </div>
+                <div class="q-field-wrap">
+                  <span class="lbl">발행일</span>
+                  <div class="q-field">2026.05.06</div>
+                </div>
+                <div class="q-field-wrap">
+                  <span class="lbl">유효기간</span>
+                  <div class="q-field">2026.05.20 (+14일)</div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Items (manual) -->
+            <div class="q-block manual">
+              <div class="h">항목</div>
+              <div style="display: grid; grid-template-columns: 2fr 0.6fr 1.1fr 1.1fr; gap: 10px; padding: 0 0 6px; font-size: 10px; color: var(--n-400); border-bottom: 0.5px solid var(--n-100);">
+                <div>작업명</div>
+                <div style="text-align: center;">수량</div>
+                <div style="text-align: right;">단가</div>
+                <div style="text-align: right;">금액</div>
+              </div>
+              <div class="q-items">
+                <div class="q-item-row">
+                  <div class="name">로고 1차안 디자인</div>
+                  <div class="qty">1</div>
+                  <div class="price">1,500,000</div>
+                  <div class="total">1,500,000</div>
+                </div>
+                <div class="q-item-row">
+                  <div class="name">디자인 가이드라인 (PDF)</div>
+                  <div class="qty">1</div>
+                  <div class="price">1,200,000</div>
+                  <div class="total">1,200,000</div>
+                </div>
+                <div class="q-item-row">
+                  <div class="name">
+                    수정 1회 포함
+                    <span class="q-edited-badge">기본값 수정됨</span>
+                  </div>
+                  <div class="qty">1</div>
+                  <div class="price">500,000</div>
+                  <div class="total">500,000</div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Auto totals -->
+            <div class="q-block auto">
+              <div class="badge-auto">⚡ 자동 계산</div>
+              <div class="h">금액</div>
+              <div class="q-totals">
+                <div class="q-totals-row">
+                  <span class="l">소계</span>
+                  <span class="v">3,200,000</span>
+                </div>
+                <div class="q-totals-row">
+                  <span class="l">부가세 10% <span class="q-help-ico">?</span></span>
+                  <span class="v">320,000</span>
+                </div>
+                <div class="q-totals-final">
+                  <span class="l">합계</span>
+                  <span class="v">₩3,520,000</span>
+                </div>
+              </div>
+              <div class="q-tax-help">
+                <span class="q-tax-help-ico">💡</span>
+                <div class="q-tax-help-text">
+                  <strong>왜 부가세 10%인가요?</strong><br>
+                  당신: <strong>일반과세자</strong> · 클라이언트(A사): <strong>사업자</strong><br>
+                  → 부가세법 기준 10% 자동 적용 · 세금계산서 발급 대상
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div>
+            <div class="q-preview-label">
+              <span class="green-dot"></span>
+              실시간 미리보기
+            </div>
+            <div class="q-preview">
+              <div class="q-preview-h">
+                <span class="title">견적서</span>
+                <span class="num">Q-2026-0042</span>
+              </div>
+              <div style="font-size: 11px; color: var(--n-700); padding: 4px 0;">A사 귀중</div>
+              <div class="q-preview-row"><span class="a">로고 1차안 디자인</span><span class="b">1,500,000</span></div>
+              <div class="q-preview-row"><span class="a">디자인 가이드라인</span><span class="b">1,200,000</span></div>
+              <div class="q-preview-row"><span class="a">수정 1회 포함</span><span class="b">500,000</span></div>
+              <div class="q-preview-row" style="margin-top: 8px;"><span class="a">소계</span><span class="b">3,200,000</span></div>
+              <div class="q-preview-row"><span class="a">부가세</span><span class="b">320,000</span></div>
+              <div class="q-preview-total">
+                <span>합계</span>
+                <span class="v">₩3,520,000</span>
+              </div>
+              <div style="font-size: 10px; color: var(--n-400); text-align: right; margin-top: 4px;">유효기간 2026.05.20</div>
+            </div>
+          </div>
+        </div>
+      </main>
+      <!-- Pins for quote editor -->
+      <button class="pin" data-pin="7" style="top: 145px; left: 480px;" aria-label="핀 7">7</button>
+      <button class="pin" data-pin="8" style="top: 320px; left: 320px;" aria-label="핀 8">8</button>
+      <button class="pin" data-pin="9" style="top: 525px; left: 480px;" aria-label="핀 9">9</button>
+      <button class="pin" data-pin="10" style="top: 588px; left: 700px;" aria-label="핀 10">10</button>
+      <button class="pin" data-pin="11" style="top: 270px; left: 1115px;" aria-label="핀 11">11</button>
+      <button class="pin" data-pin="12" style="top: 380px; left: 478px;" aria-label="핀 12">12</button>
+    </div>
+
+    <!-- ============ SCREEN 3: INVOICE TRACKING ============ -->
+    <div class="app hidden" data-screen="invoice">
+      <aside class="sidebar">
+        <div class="sidebar-brand"><span class="logo">S</span><span class="name">Solo</span></div>
+        <nav class="sidebar-nav">
+          <div class="sidebar-nav-item"><span class="ico">📊</span><span>대시보드</span></div>
+          <div class="sidebar-nav-item"><span class="ico">📁</span><span>프로젝트</span><span class="count">8</span></div>
+          <div class="sidebar-nav-item"><span class="ico">👥</span><span>클라이언트</span></div>
+          <div class="sidebar-nav-item active"><span class="ico">💰</span><span>정산</span></div>
+          <div class="sidebar-nav-item"><span class="ico">⚙️</span><span>설정</span></div>
+        </nav>
+      </aside>
+      <main class="main">
+        <div class="main-header">
+          <div>
+            <h2>정산 / 인보이스</h2>
+            <div class="sub">발급된 인보이스 12건 · 미입금 ₩1,500,000 · 연체 1건</div>
+          </div>
+          <button class="main-cta">+ 새 인보이스</button>
+        </div>
+
+        <div class="inv-stats">
+          <div class="inv-stat">
+            <div class="l">발급 대기</div>
+            <div class="v">2</div>
+            <div class="sub">₩1,000,000</div>
+          </div>
+          <div class="inv-stat info">
+            <div class="l">발급됨 · 미입금</div>
+            <div class="v">3</div>
+            <div class="sub">₩1,500,000</div>
+          </div>
+          <div class="inv-stat warn">
+            <div class="l">⚠ 연체</div>
+            <div class="v">1</div>
+            <div class="sub">₩500,000</div>
+          </div>
+          <div class="inv-stat success">
+            <div class="l">이번 달 입금</div>
+            <div class="v">5</div>
+            <div class="sub">₩3,200,000</div>
+          </div>
+        </div>
+
+        <div class="inv-table">
+          <div class="inv-table-header">
+            <div>상태</div>
+            <div>인보이스</div>
+            <div>금액</div>
+            <div>발급일</div>
+            <div>기한</div>
+            <div></div>
+          </div>
+          <div class="inv-row-table late">
+            <span class="pill late">⚠ 연체</span>
+            <div class="name-block"><div class="name">D사 — 컨설팅 1차</div><div class="num">INV-2026-0038</div></div>
+            <div class="amt">₩500,000</div>
+            <div class="date">04.20</div>
+            <div class="due">+5일 경과</div>
+            <div class="actions">
+              <button class="btn-confirm">입금 확인</button>
+            </div>
+          </div>
+          <div class="inv-row-table">
+            <span class="pill unpaid">미입금</span>
+            <div class="name-block"><div class="name">E사 — 4월 컨설팅</div><div class="num">INV-2026-0040</div></div>
+            <div class="amt">₩800,000</div>
+            <div class="date">04.30</div>
+            <div class="due" style="color: var(--info-700); font-weight: 500;">D-3</div>
+            <div class="actions">
+              <button class="btn-remind">📧 리마인드</button>
+            </div>
+          </div>
+          <div class="inv-row-table">
+            <span class="pill unpaid">미입금</span>
+            <div class="name-block"><div class="name">F스튜디오 — 자문 (5월)</div><div class="num">INV-2026-0041</div></div>
+            <div class="amt">₩200,000</div>
+            <div class="date">05.05</div>
+            <div class="due">D-22</div>
+            <div class="actions"></div>
+          </div>
+          <div class="inv-row-table done">
+            <span class="pill done">✓ 입금</span>
+            <div class="name-block"><div class="name">A사 — 로고 1차 (선금)</div><div class="num">INV-2026-0037</div></div>
+            <div class="amt">₩960,000</div>
+            <div class="date">04.18</div>
+            <div class="due" style="color: var(--p-700);">완료 04.25</div>
+            <div class="actions"></div>
+          </div>
+          <div class="inv-row-table done">
+            <span class="pill done">✓ 입금</span>
+            <div class="name-block"><div class="name">B스튜디오 — 컨설팅 (3월)</div><div class="num">INV-2026-0035</div></div>
+            <div class="amt">₩880,000</div>
+            <div class="date">04.02</div>
+            <div class="due" style="color: var(--p-700);">완료 04.10</div>
+            <div class="actions"></div>
+          </div>
+        </div>
+      </main>
+      <!-- Pins for invoice -->
+      <button class="pin" data-pin="13" style="top: 200px; left: 480px;" aria-label="핀 13">13</button>
+      <button class="pin" data-pin="14" style="top: 350px; left: 250px;" aria-label="핀 14">14</button>
+      <button class="pin" data-pin="15" style="top: 350px; left: 1130px;" aria-label="핀 15">15</button>
+      <button class="pin" data-pin="16" style="top: 545px; left: 250px;" aria-label="핀 16">16</button>
+    </div>
+
+    <!-- ============ SCREEN 4: PROJECT DETAIL ============ -->
+    <div class="app hidden" data-screen="project">
+      <aside class="sidebar">
+        <div class="sidebar-brand"><span class="logo">S</span><span class="name">Solo</span></div>
+        <nav class="sidebar-nav">
+          <div class="sidebar-nav-item"><span class="ico">📊</span><span>대시보드</span></div>
+          <div class="sidebar-nav-item active"><span class="ico">📁</span><span>프로젝트</span><span class="count">8</span></div>
+          <div class="sidebar-nav-item"><span class="ico">👥</span><span>클라이언트</span></div>
+          <div class="sidebar-nav-item"><span class="ico">💰</span><span>정산</span></div>
+          <div class="sidebar-nav-item"><span class="ico">⚙️</span><span>설정</span></div>
+        </nav>
+      </aside>
+      <main class="main">
+        <div class="breadcrumb">
+          <span>프로젝트</span><span class="sep">›</span>
+          <span class="current">로고 리뉴얼 + 가이드라인</span>
+        </div>
+
+        <div class="pd-header-card">
+          <div class="pd-header-row">
+            <div class="av">A</div>
+            <div class="info">
+              <div class="title-row">
+                <div class="name">로고 리뉴얼 + 가이드라인</div>
+                <span class="pd-status-pill">진행 중</span>
+              </div>
+              <div class="meta">
+                <span>A사</span>
+                <span>·</span>
+                <span>2026.04.22 ~ 05.15</span>
+                <span>·</span>
+                <span style="font-family: var(--font-mono);">₩3,520,000</span>
+              </div>
+            </div>
+            <button class="main-cta">+ 인보이스</button>
+          </div>
+        </div>
+
+        <div class="pd-tabs">
+          <div class="pd-tab active">개요</div>
+          <div class="pd-tab">견적 <span class="count">1</span></div>
+          <div class="pd-tab">일정</div>
+          <div class="pd-tab">인보이스 <span class="count">2</span></div>
+          <div class="pd-tab">활동 로그</div>
+        </div>
+
+        <div class="pd-grid">
+          <div>
+            <div class="pd-progress">
+              <div class="h">진행 단계</div>
+              <div class="pd-bars">
+                <div class="done"></div>
+                <div class="done"></div>
+                <div class="now"></div>
+                <div></div>
+                <div></div>
+              </div>
+              <div class="pd-stages">
+                <span class="done">✓ 견적</span>
+                <span class="done">✓ 계약</span>
+                <span class="now">● 작업 중</span>
+                <span class="next">납품</span>
+                <span class="next">입금</span>
+              </div>
+            </div>
+
+            <div class="pd-mile">
+              <div class="h-row">
+                <span class="h">마일스톤</span>
+                <span class="more">+ 추가</span>
+              </div>
+              <div class="pd-mile-row">
+                <span class="check done">✓</span>
+                <span class="name">킥오프 미팅</span>
+                <span class="when">04.22</span>
+              </div>
+              <div class="pd-mile-row now">
+                <span class="check now"></span>
+                <span class="name">1차 시안 납품<div class="desc">로고 3안 + 적용 예시</div></span>
+                <span class="when">D-3</span>
+              </div>
+              <div class="pd-mile-row next">
+                <span class="check next"></span>
+                <span class="name">수정 1차</span>
+                <span class="when">05.10</span>
+              </div>
+              <div class="pd-mile-row next">
+                <span class="check next"></span>
+                <span class="name">최종 납품</span>
+                <span class="when">05.15</span>
+              </div>
+            </div>
+          </div>
+
+          <div>
+            <div class="pd-money">
+              <div class="h">금액</div>
+              <div class="pd-money-row"><span class="a">견적가</span><span class="b">₩3,520,000</span></div>
+              <div class="pd-money-row"><span class="a">청구 (1/2)</span><span class="b">₩960,000</span></div>
+              <div class="pd-money-row in"><span class="a">입금</span><span class="b">₩960,000</span></div>
+              <div class="pd-money-row out"><span class="a">잔여</span><span class="b">₩2,560,000</span></div>
+            </div>
+
+            <div class="pd-activity">
+              <div class="h">최근 활동</div>
+              <div class="pd-activity-row recent">
+                <span class="dot"></span>
+                <div>
+                  <div class="text">선금 ₩960,000 입금 확인</div>
+                  <div class="when">04.25</div>
+                </div>
+              </div>
+              <div class="pd-activity-row">
+                <span class="dot"></span>
+                <div>
+                  <div class="text">선금 인보이스 발송</div>
+                  <div class="when">04.22</div>
+                </div>
+              </div>
+              <div class="pd-activity-row">
+                <span class="dot"></span>
+                <div>
+                  <div class="text">계약 체결</div>
+                  <div class="when">04.21</div>
+                </div>
+              </div>
+              <div class="pd-activity-row">
+                <span class="dot"></span>
+                <div>
+                  <div class="text">견적 발송</div>
+                  <div class="when">04.18</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </main>
+      <!-- Pins for project -->
+      <button class="pin" data-pin="17" style="top: 380px; left: 320px;" aria-label="핀 17">17</button>
+      <button class="pin" data-pin="18" style="top: 545px; left: 320px;" aria-label="핀 18">18</button>
+      <button class="pin" data-pin="19" style="top: 540px; left: 1120px;" aria-label="핀 19">19</button>
+      <button class="pin" data-pin="20" style="top: 600px; left: 980px;" aria-label="핀 20">20</button>
+    </div>
+
+    <!-- ============ SCREEN 5: CLIENT DETAIL ============ -->
+    <div class="app hidden" data-screen="client">
+      <aside class="sidebar">
+        <div class="sidebar-brand"><span class="logo">S</span><span class="name">Solo</span></div>
+        <nav class="sidebar-nav">
+          <div class="sidebar-nav-item"><span class="ico">📊</span><span>대시보드</span></div>
+          <div class="sidebar-nav-item"><span class="ico">📁</span><span>프로젝트</span><span class="count">8</span></div>
+          <div class="sidebar-nav-item active"><span class="ico">👥</span><span>클라이언트</span></div>
+          <div class="sidebar-nav-item"><span class="ico">💰</span><span>정산</span></div>
+          <div class="sidebar-nav-item"><span class="ico">⚙️</span><span>설정</span></div>
+        </nav>
+      </aside>
+      <main class="main">
+        <div class="breadcrumb">
+          <span>클라이언트</span><span class="sep">›</span>
+          <span class="current">A사</span>
+        </div>
+
+        <div class="cd-profile">
+          <div class="cd-profile-row">
+            <div class="av">A</div>
+            <div class="info">
+              <div class="name-row">
+                <span class="name">A사</span>
+                <span class="cd-biz-pill">사업자</span>
+              </div>
+              <div class="meta">
+                <span>📧 contact@a-corp.kr</span>
+                <span>🆔 123-45-67890</span>
+                <span>👤 박팀장</span>
+              </div>
+            </div>
+            <div class="main-actions">
+              <button class="btn-secondary">✏️ 편집</button>
+              <button class="main-cta">+ 새 프로젝트</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="cd-grid">
+          <div>
+            <div class="cd-timeline-h">거래 이력</div>
+            <div class="cd-timeline">
+              <div class="cd-tl-item now">
+                <div class="top">
+                  <span class="name">로고 리뉴얼 + 가이드라인</span>
+                  <span class="pill now">진행 중</span>
+                </div>
+                <div class="meta">
+                  <span>2026.04 ~</span>
+                  <span>·</span>
+                  <span style="font-family: var(--font-mono);">₩3,520,000</span>
+                  <span>·</span>
+                  <span>입금 1/2 완료</span>
+                </div>
+              </div>
+              <div class="cd-tl-item">
+                <div class="top">
+                  <span class="name">웹사이트 메인 카피라이팅</span>
+                  <span class="pill done">✓ 완료</span>
+                </div>
+                <div class="meta">
+                  <span>2026.01 ~ 03</span>
+                  <span>·</span>
+                  <span style="font-family: var(--font-mono);">₩4,500,000</span>
+                  <span>·</span>
+                  <span>입금 +8일</span>
+                </div>
+              </div>
+              <div class="cd-tl-item">
+                <div class="top">
+                  <span class="name">SNS 콘텐츠 기획 (3개월)</span>
+                  <span class="pill done">✓ 완료</span>
+                </div>
+                <div class="meta">
+                  <span>2025.10 ~ 12</span>
+                  <span>·</span>
+                  <span style="font-family: var(--font-mono);">₩2,800,000</span>
+                  <span>·</span>
+                  <span>입금 +12일</span>
+                </div>
+              </div>
+              <div class="cd-tl-item">
+                <div class="top">
+                  <span class="name">브랜드 컨셉 자문</span>
+                  <span class="pill done">✓ 완료</span>
+                </div>
+                <div class="meta">
+                  <span>2025.07 ~ 09</span>
+                  <span>·</span>
+                  <span style="font-family: var(--font-mono);">₩2,500,000</span>
+                  <span>·</span>
+                  <span>입금 +15일</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div>
+            <div class="cd-policy">
+              <div class="h-row">
+                <span style="font-size: 14px; color: var(--info-700);">📋</span>
+                <span class="h">이 클라이언트의 정책</span>
+              </div>
+              <div class="cd-policy-row"><span class="a">결제 조건</span><span class="b">완료 후 30일</span></div>
+              <div class="cd-policy-row"><span class="a">기본 단가</span><span class="b mono">₩300,000/일</span></div>
+              <div class="cd-policy-row"><span class="a">세금 처리</span><span class="b">사업자 · VAT 10%</span></div>
+              <div class="cd-policy-row"><span class="a">선호 결제수단</span><span class="b">계좌이체</span></div>
+              <div class="footer">
+                <span>⚡</span>
+                <span>새 견적 작성 시 자동 적용</span>
+              </div>
+            </div>
+
+            <div class="cd-insight">
+              <div class="h-row">
+                <span style="font-size: 14px;">📊</span>
+                <span class="h">인사이트</span>
+              </div>
+              <div class="cd-insight-row">
+                <div class="l">총 매출</div>
+                <div class="v">₩13,300,000</div>
+              </div>
+              <div class="cd-insight-row">
+                <div class="l">평균 프로젝트 단가</div>
+                <div class="v medium">₩3,325,000</div>
+              </div>
+              <div class="cd-insight-row">
+                <div class="l">평균 입금 지연</div>
+                <div class="v medium">11.7일<span class="cd-trend-tag">↑ 늘어나는 중</span></div>
+              </div>
+              <div class="cd-insight-row">
+                <div class="l">단가 추이 (최근 4건)</div>
+                <div class="cd-chart">
+                  <div style="height: 38%; background: var(--info-200);"></div>
+                  <div style="height: 50%; background: var(--info-500);"></div>
+                  <div style="height: 70%; background: var(--info-500);"></div>
+                  <div style="height: 95%; background: var(--info-700);"></div>
+                </div>
+                <div style="display: flex; justify-content: space-between; margin-top: 4px; font-size: 9px; color: var(--n-400);">
+                  <span>'25.07</span><span>'25.10</span><span>'26.01</span><span>'26.04</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </main>
+      <!-- Pins for client -->
+      <button class="pin" data-pin="21" style="top: 320px; left: 320px;" aria-label="핀 21">21</button>
+      <button class="pin" data-pin="22" style="top: 320px; left: 1010px;" aria-label="핀 22">22</button>
+      <button class="pin" data-pin="23" style="top: 538px; left: 1010px;" aria-label="핀 23">23</button>
+      <button class="pin" data-pin="24" style="top: 760px; left: 1010px;" aria-label="핀 24">24</button>
+    </div>
+
+  </div>
+</section>
+
+<!-- Popover -->
+<div class="popover" id="popover" role="dialog" aria-modal="true" aria-labelledby="popoverTitle">
+  <div class="popover-header">
+    <div class="popover-num">
+      <span class="pin-circle" id="popoverNum">1</span>
+      <span id="popoverLabel">DESIGN DECISION</span>
+    </div>
+    <button class="popover-close" id="popoverClose" aria-label="닫기">✕</button>
+  </div>
+  <h3 id="popoverTitle">제목</h3>
+  <p id="popoverBody">설명</p>
+  <span class="popover-tag" id="popoverTag" style="display:none;"></span>
+</div>
+
+<section class="bottom-cta">
+  <h2>이 데모는 빠르게 훑어보는 형식입니다</h2>
+  <p>설계 과정 전체 (페르소나·의사결정·정책 설계·디자인 시스템)는 케이스 스터디에 정리되어 있습니다.</p>
+  <div class="bottom-cta-buttons">
+    <a href="solo.html" class="bottom-cta-btn primary">
+      케이스 스터디 정독하기
+      <span>→</span>
+    </a>
+    <a href="index.html" class="bottom-cta-btn secondary">
+      포트폴리오 메인
+    </a>
+  </div>
+</section>
+
+<footer>
+  © 2026 Kyunghwan Heo · <a href="index.html">kyunghwan.dev</a>
+</footer>
+
+<script>
+const PINS = {
+  // === Dashboard ===
+  1: {
+    title: "사이드바: 프로젝트가 1차 축",
+    body: "Solo의 1차 객체는 <strong>프로젝트</strong>입니다. 클라이언트가 아닌 프로젝트 중심으로 IA를 짠 이유는, 주 페르소나(초보 프리랜서)의 80%가 단발 작업이기 때문. 한 클라이언트 안에 여러 프로젝트가 누적되는 건 그 다음 케이스이고, 클라이언트 상세 페이지에서 충분히 풀어줍니다.",
+    tag: "정보구조 / IA"
+  },
+  2: {
+    title: "확정 vs 예상을 분리한 이유",
+    body: "단일 \"이번 달 수익\" 카드를 두지 않은 건 의도된 선택. 입금이 끝난 <strong>확정 금액</strong>과 진행 중인 프로젝트 기반의 <strong>예상 금액</strong>이 섞이면 \"실제로 받을 돈\"이 흐려집니다. 두 카드로 분리하면 \"오늘 기준으로 확실한 것\"과 \"전망\"이 명확해집니다.",
+    tag: "데이터 시각화"
+  },
+  3: {
+    title: "미수금만 경고색으로 강조",
+    body: "메트릭 카드 4개 중 미수금만 노란 보더로 처리. 다른 셋은 \"정보\"이고, 미수금만 \"<strong>처리할 일</strong>\"이기 때문. 시각 우선순위 = 액션 우선순위라는 인터랙션 원칙을 카드 단위로 적용했습니다.",
+    tag: "인터랙션 원칙 #4"
+  },
+  4: {
+    title: "클라이언트 색 아바타",
+    body: "A사(파랑) / B사(노랑) / C사(보라) — 색은 의미가 아닌 <strong>식별용</strong>입니다. 사용자가 프로젝트 행을 훑을 때 어느 클라이언트 일인지 즉시 인지하도록. 단, 채도를 의도적으로 낮춰 시각 노이즈를 최소화했습니다.",
+    tag: "디자인 시스템"
+  },
+  5: {
+    title: "연체 행에만 진한 액션 버튼",
+    body: "미수금 패널의 일반 행에는 액션 버튼이 없고, <strong>연체 행만 \"입금 확인\" 버튼이 진하게</strong> 노출됩니다. \"처리할 우선순위\"가 곧 \"액션의 강도\"로 표현되도록 디자인. 일반 미입금엔 액션 자체가 없어 인지 부담을 줄였습니다.",
+    tag: "인터랙션 원칙 #1"
+  },
+  6: {
+    title: "D-3 마일스톤 카드",
+    body: "단순히 다음 마일스톤 날짜를 적는 대신 <strong>D-카운팅</strong>으로 표시. 4월 30일이라는 절대 날짜보다 \"D-3\"이 즉각적인 시간 감각을 줍니다. 프리랜서는 마감일 기반으로 일정을 짜기 때문에, 이 표기가 더 자연스러운 인지 모델.",
+    tag: "정보 디자인"
+  },
+  
+  // === Quote Editor ===
+  7: {
+    title: "파란 배경 = 시스템 자동 영역",
+    body: "이 영역의 모든 정보(클라이언트, 견적번호, 발행일 등)는 <strong>시스템이 자동으로 채웁니다</strong>. 사용자가 만지지 않아도 됩니다. 파란색은 \"여기는 자동\"이라는 시각 약속. 흰색 영역(항목 입력)과 명확히 구분됩니다.",
+    tag: "의사결정 2: 자동/수동"
+  },
+  8: {
+    title: "흰 배경 = 사용자 입력 영역",
+    body: "항목·수량·단가는 사용자가 직접 입력하는 부분. 자유 양식이 아닌 <strong>구조화된 필드</strong>로 받아서, 인보이스나 계약서로 자동 변환할 때 데이터로 그대로 흐를 수 있게 설계. 옵션 A(자유양식)와 B(완전표준화) 사이의 균형점입니다.",
+    tag: "의사결정 3: 구조화 견적서"
+  },
+  9: {
+    title: "(?) 아이콘 — 신뢰 확보의 핵심",
+    body: "\"<strong>왜 부가세 10%인가요?</strong>\" 자동 계산 옆 (?)아이콘 클릭 시 근거를 즉시 표시. 사용자가 의심하기 전에 답을 준비해두는 것. 자동화된 시스템에 대한 신뢰는 결과가 아니라 <strong>근거의 투명성</strong>에서 나옵니다.",
+    tag: "신뢰 확보 UX #1"
+  },
+  10: {
+    title: "자동 계산된 합계 ₩3,520,000",
+    body: "사용자가 항목만 입력하면 소계 → 부가세 → 합계가 즉시 계산됩니다. 단, 자동 계산 결과를 사용자가 <strong>오버라이드 가능</strong>(특수 견적의 경우). 자동화의 효율과 사용자 통제권의 균형. 이게 \"옵션 C: 자동+오버라이드\"의 실제 구현.",
+    tag: "정책 엔진"
+  },
+  11: {
+    title: "라이브 미리보기",
+    body: "좌측에서 입력하는 동안 우측은 <strong>실제 발송될 견적서 모습</strong>으로 실시간 갱신. \"내가 입력한 게 어떻게 나갈지\"의 불안감 해소. 페인포인트 #2(\"매번 처음부터\")의 해결을 즉각적으로 가시화하는 장치.",
+    tag: "페인 #2 해결"
+  },
+  12: {
+    title: "\"기본값 수정됨\" 뱃지",
+    body: "기본 단가를 사용자가 변경했을 때만 작은 노란 뱃지가 붙음. 자동값을 사용자가 의도적으로 수정했음을 시스템과 사용자 모두에게 명시. <strong>관성을 깰 수 있게 두되, 그 의도를 드러나게 하는</strong> 인터랙션.",
+    tag: "인터랙션 원칙 #3"
+  },
+  
+  // === Invoice ===
+  13: {
+    title: "상태별 카드 4개 = 라이프사이클",
+    body: "발급 대기 → 미입금 → 연체 → 완료. 인보이스의 <strong>전체 생명 주기</strong>를 카드 4개로 시각화. 각 카드는 클릭 시 해당 상태만 필터링됨. 사용자가 \"지금 어디에 무엇이 있는지\" 한눈에 파악.",
+    tag: "정보 시각화"
+  },
+  14: {
+    title: "연체 행만 빨간 배경",
+    body: "처리 우선순위가 가장 높은 연체 행만 빨간 배경으로 강조. <strong>한 화면에서 처리할 일이 즉시 식별</strong>됩니다. 일반 미입금은 정보 색(파랑), 완료는 톤다운. 시각 우선순위가 액션 우선순위.",
+    tag: "인터랙션 원칙 #4"
+  },
+  15: {
+    title: "\"입금 확인\" 1클릭",
+    body: "연체 행에 진한 검정 버튼으로 노출. 클릭 시 즉시 입금 처리 → 대시보드 미수금 자동 차감, 정산 리포트 자동 갱신. <strong>데이터 흐름의 마지막 퍼즐</strong>을 1클릭으로 닫는 설계. 일반 미입금엔 보조 \"리마인드\" 버튼만.",
+    tag: "인터랙션 원칙 #5"
+  },
+  16: {
+    title: "완료 행 투명도 55%",
+    body: "입금 완료된 행은 의도적으로 <strong>투명도를 낮춰 시야에서 빠지게</strong> 처리. \"처리 끝난 일은 자연스럽게 가라앉는다\"는 원칙. 사용자의 인지 부담을 시각적으로 분배하는 디자인 결정.",
+    tag: "인터랙션 원칙 #4"
+  },
+  
+  // === Project Detail ===
+  17: {
+    title: "5단계 진행바 (고정)",
+    body: "견적 → 계약 → 작업 → 납품 → 입금. 모든 프로젝트가 거치는 <strong>고정된 라이프사이클</strong>. 완료(초록)와 현재(파랑)를 색으로 구분. 사용자가 정의하지 않는 단계라 5개로 고정. 일관된 멘탈 모델 제공.",
+    tag: "정보 디자인"
+  },
+  18: {
+    title: "마일스톤 (가변)",
+    body: "진행 단계가 라이프사이클이라면 마일스톤은 <strong>사용자 정의 일정</strong>. 같은 정보를 두 가지 추상화 단계로 보여주는 게 의도. 진행바는 고정 = 안정감, 마일스톤은 가변 = 자유도. PM이 정보를 다층으로 다루는 사고의 시각화.",
+    tag: "이중 추상화"
+  },
+  19: {
+    title: "잔여 금액의 노란 강조",
+    body: "견적가 / 청구 / 입금 / <strong>잔여</strong> 4단 정보 중 \"잔여\"가 가장 큰 글씨 + 노란색. \"앞으로 받을 돈\"이 프리랜서가 가장 알고 싶은 정보. 시각 위계가 정보 중요도와 일치.",
+    tag: "정보 위계"
+  },
+  20: {
+    title: "활동 로그의 점 색상",
+    body: "가장 최근 활동만 <strong>초록 점</strong>, 나머지는 회색. 사용자가 \"마지막에 무슨 일이 있었지?\"를 한 점으로 즉시 인지. 작은 색 변화로 큰 인지 효율을 만드는 디테일.",
+    tag: "정보 디자인"
+  },
+  
+  // === Client Detail ===
+  21: {
+    title: "거래 타임라인",
+    body: "의사결정 1(프로젝트 중심 IA)의 <strong>트레이드오프 보완</strong>. \"베테랑 페르소나가 한 클라이언트의 모든 프로젝트를 보고 싶어할 때\"를 위해 클라이언트 상세에 거래 타임라인을 두텁게 배치. 진행 중(파랑) + 완료(초록) 점으로 시간 흐름 시각화.",
+    tag: "트레이드오프 보완"
+  },
+  22: {
+    title: "정책 박스 — 페인 #3 직접 해결",
+    body: "결제 조건 / 기본 단가 / 세금 처리 / 선호 결제수단 — 이전엔 <strong>프리랜서 머릿속에만 있던 룰</strong>을 명시적 데이터로. 이게 페인포인트 #3 \"룰이 머릿속에만 있다\"의 직접적 해결. 파란 배경 = 시스템 정책의 약속.",
+    tag: "페인 #3 해결"
+  },
+  23: {
+    title: "\"→ 자동 적용\" 라벨",
+    body: "이 정책 박스의 정보가 <strong>새 견적 작성 시 자동 적용된다</strong>고 명시. 화면 단위로 끝나지 않고 다른 화면(견적 작성 시)으로 연결되는 약속을 사용자에게 보여줌. 데이터 흐름의 가시화.",
+    tag: "화면 간 연결"
+  },
+  24: {
+    title: "단가 추이 미니 차트",
+    body: "거래 가치의 <strong>진화</strong>를 4개의 막대로 시각화. 옅은 파랑 → 진한 파랑으로 색이 진해짐 = 시간이 지날수록 단가가 오름. 베테랑 페르소나가 \"이 클라이언트와의 관계가 어떻게 발전했는가\"를 즉시 파악할 수 있는 인사이트.",
+    tag: "베테랑 페르소나용"
+  }
+};
+
+// === Tab switching ===
+const tabs = document.querySelectorAll('.tab');
+const screens = document.querySelectorAll('.app');
+const demoUrl = document.getElementById('demoUrl');
+
+const URLS = {
+  dashboard: 'solo.app / dashboard',
+  quote: 'solo.app / projects / new-quote',
+  invoice: 'solo.app / invoices',
+  project: 'solo.app / projects / a-logo-renewal',
+  client: 'solo.app / clients / a-corp'
+};
+
+function switchScreen(screenName) {
+  // Close any open popover
+  closePopover();
+  
+  tabs.forEach(t => t.classList.toggle('active', t.dataset.screen === screenName));
+  screens.forEach(s => s.classList.toggle('hidden', s.dataset.screen !== screenName));
+  if (demoUrl && URLS[screenName]) demoUrl.textContent = URLS[screenName];
+  
+  // Scroll to demo if not visible
+  const demoFrame = document.getElementById('demoFrame');
+  const rect = demoFrame.getBoundingClientRect();
+  if (rect.top < -100) {
+    demoFrame.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+}
+
+tabs.forEach(tab => {
+  tab.addEventListener('click', () => switchScreen(tab.dataset.screen));
+});
+
+// === Popover ===
+const popover = document.getElementById('popover');
+const popoverNum = document.getElementById('popoverNum');
+const popoverTitle = document.getElementById('popoverTitle');
+const popoverBody = document.getElementById('popoverBody');
+const popoverTag = document.getElementById('popoverTag');
+const popoverClose = document.getElementById('popoverClose');
+
+let activePin = null;
+
+function showPin(num, anchorEl) {
+  const data = PINS[num];
+  if (!data) return;
+  
+  popoverNum.textContent = num;
+  popoverTitle.textContent = data.title;
+  popoverBody.innerHTML = data.body;
+  if (data.tag) {
+    popoverTag.textContent = data.tag;
+    popoverTag.style.display = 'inline-flex';
+  } else {
+    popoverTag.style.display = 'none';
+  }
+  
+  // Mark active states
+  document.querySelectorAll('.pin').forEach(p => 
+    p.classList.toggle('active', p.dataset.pin === String(num))
+  );
+  activePin = num;
+  
+  popover.classList.add('show');
+  
+  requestAnimationFrame(() => {
+    const popRect = popover.getBoundingClientRect();
+    const popW = popRect.width;
+    const popH = popRect.height;
+    const margin = 14;
+    
+    let top, left;
+    
+    if (anchorEl) {
+      const anchorRect = anchorEl.getBoundingClientRect();
+      
+      // Try right of anchor
+      left = anchorRect.right + margin;
+      top = anchorRect.top + (anchorRect.height / 2) - (popH / 2);
+      
+      // If overflows right, try left
+      if (left + popW > window.innerWidth - margin) {
+        left = anchorRect.left - popW - margin;
+      }
+      
+      // If still overflows left, center horizontally below
+      if (left < margin) {
+        left = Math.max(margin, Math.min(window.innerWidth - popW - margin, anchorRect.left + (anchorRect.width / 2) - (popW / 2)));
+        top = anchorRect.bottom + margin;
+      }
+      
+      // Vertical clamp
+      top = Math.max(margin + 60, Math.min(window.innerHeight - popH - margin, top));
+    } else {
+      left = (window.innerWidth - popW) / 2;
+      top = (window.innerHeight - popH) / 2;
+    }
+    
+    popover.style.left = left + 'px';
+    popover.style.top = top + 'px';
+  });
+}
+
+function closePopover() {
+  popover.classList.remove('show');
+  document.querySelectorAll('.pin').forEach(p => p.classList.remove('active'));
+  activePin = null;
+}
+
+document.addEventListener('click', (e) => {
+  const pinEl = e.target.closest('.pin');
+  if (pinEl) {
+    e.stopPropagation();
+    const num = pinEl.dataset.pin;
+    if (activePin === num) {
+      closePopover();
+    } else {
+      showPin(num, pinEl);
+    }
+    return;
+  }
+  
+  // Close on outside click
+  if (!popover.contains(e.target)) {
+    closePopover();
+  }
+});
+
+popoverClose.addEventListener('click', (e) => {
+  e.stopPropagation();
+  closePopover();
+});
+
+// Close on Escape
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'Escape' && activePin !== null) closePopover();
+});
+
+// Reposition on resize/scroll
+let repositionRaf = null;
+function reposition() {
+  if (activePin === null) return;
+  if (repositionRaf) cancelAnimationFrame(repositionRaf);
+  repositionRaf = requestAnimationFrame(() => {
+    const targetPin = document.querySelector(`.pin[data-pin="${activePin}"]`);
+    if (targetPin && !targetPin.closest('.app').classList.contains('hidden')) {
+      showPin(activePin, targetPin);
+    }
+  });
+}
+window.addEventListener('resize', reposition);
+window.addEventListener('scroll', reposition, { passive: true });
+</script>
+
+</body>
+</html>
